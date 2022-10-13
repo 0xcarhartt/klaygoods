@@ -4,7 +4,6 @@
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -108,22 +107,41 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
+.landingImage {
+  width: 280px;
+  height: 280px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .card,
-  .footer {
-    border-color: #222;
-  }
-  .code {
-    background: #111;
-  }
-  .logo img {
-    filter: invert(1);
-  }
+.landingTitle {
+  width: 482px;
+  font-weight: 500;
+  font-size: 60px;
+  line-height: 60px;
+  text-align: center;
+}
+
+.landingSubtitle {
+  width: 400px;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  color: #5a5a5a;
+}
+
+.landingBtn {
+  width: 280px !important;
+  height: 50px !important;
+  background: #1c1c1c !important;
+  border-radius: 50px !important;
+  color: white;
+
+  font-weight: 500;
+  font-size: 20px !important;
+}
+
+.landingContainer {
+  overflow: hidden;
+  width: 130%;
+  justify-content: center;
 }

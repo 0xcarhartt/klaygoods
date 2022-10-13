@@ -1,0 +1,12 @@
+.navbar {
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.navTabs {
+  gap: 1rem;
+}
+
+.logo {
+  width: 8rem;
+}
