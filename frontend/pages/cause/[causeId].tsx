@@ -18,6 +18,8 @@ function Cause() {
   const router = useRouter();
   const { causeId } = router.query;
 
+  if (!causeId) return;
+
   const {
     title,
     location,

@@ -137,7 +137,9 @@ function Profile() {
         <VStack pt="1rem">
           <HStack className={styles.sectionTitleContainer}>
             <HStack className={styles.sectionTitleRightContainer}>
-              <Text className={styles.sectionTitle}>Causes I've supported</Text>
+              <Text className={styles.sectionTitle}>
+                {"Causes I've supported"}
+              </Text>
               <VStack className={styles.sectionCount}>
                 <Text className={styles.sectionCountText}>10</Text>
               </VStack>

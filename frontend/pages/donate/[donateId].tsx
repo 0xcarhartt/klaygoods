@@ -18,12 +18,13 @@ function Donate() {
   const router = useRouter();
   const { donateId } = router.query;
   const [amount, setAmount] = useState<number>();
-  const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(true);
+  const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(false);
 
   function handleAmountChange(e: any) {
     setAmount(e.target.value);
   }
 
+  if (!donateId) return;
   const { title, profile, images, createdAt, donation, goal } = causes.find(
     (cause) => (donateId as string) == String(cause.id)
   );
@@ -46,10 +47,10 @@ function Donate() {
           Etherscan.
         </Text>
         <VStack className={styles.buttonContainer}>
-          <Link href="/browse">
+          <Link href="/profile">
             <Button className={styles.viewCauseBtn}>View my causes</Button>
           </Link>
-          <Link href="/browse">
+          <Link href="/profile">
             <Button className={styles.viewTxnBtn}>View transaction</Button>
           </Link>
         </VStack>
@@ -107,7 +108,11 @@ function Donate() {
               </Text>
             </VStack>
           </HStack>
-          <Button disabled={!amount} className={styles.donateBtn}>
+          <Button
+            disabled={!amount}
+            className={styles.donateBtn}
+            onClick={() => setTxnSuccessful(true)}
+          >
             Donate now
           </Button>
         </VStack>

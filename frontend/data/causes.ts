@@ -60,10 +60,44 @@ export const causes = [
       image: "/landing/carhartt.jpg",
       name: "0xcarhartt",
     },
-    images: [],
-    tags: [],
+    location: "Queenstown, Singapore",
+    images: ["/causes/1.png", "/causes/2.png", "/causes/3.png"],
+    tags: ["Climate change", "Environment", "DAO"],
     createdAt: 1665633102063,
-    description: "",
+    description:
+      "The objective of this grant is to help WeatherDAO create sustainable solutions to the rising carbon emission rates in Singapore. WeatherDAO is an autonomous organization dedicated to make this world a cleaner place. \nWith crypto donations on the Klaytn network, we can grow the fund to support even more initiatives, pushing for clean energy reform.",
+    updates: [
+      {
+        timestamp: 1664596800000,
+        title: "Thank you for the incredible support! ✨",
+        description:
+          "Our team has never envisioned the tremendous feedback we’ve recieved from this platform. Beyond excited to see how this initiative can build a cleaner planet.",
+      },
+      {
+        timestamp: 1663300800000,
+        title: "Weather DAO’s committment",
+        description:
+          "We pledge to work with local environmental activists and the Singaporean government to push for sustainable energy in large manufacturing factories.",
+      },
+    ],
+    numDonations: 1200,
+    donations: [
+      {
+        donor: "mochi1",
+        amount: 4235,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "0xyee",
+        amount: 302,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "ape38",
+        amount: 1938,
+        timestamp: 1663300800000,
+      },
+    ],
   },
   {
     id: 2,
@@ -76,10 +110,44 @@ export const causes = [
       image: "/landing/pocky.png",
       name: "ethereumfoundation",
     },
-    images: [],
-    tags: [],
+    location: "Queenstown, Singapore",
+    images: ["/causes/1.png", "/causes/2.png", "/causes/3.png"],
+    tags: ["Climate change", "Environment", "DAO"],
     createdAt: 1665633102063,
-    description: "",
+    description:
+      "The objective of this grant is to help WeatherDAO create sustainable solutions to the rising carbon emission rates in Singapore. WeatherDAO is an autonomous organization dedicated to make this world a cleaner place. \nWith crypto donations on the Klaytn network, we can grow the fund to support even more initiatives, pushing for clean energy reform.",
+    updates: [
+      {
+        timestamp: 1664596800000,
+        title: "Thank you for the incredible support! ✨",
+        description:
+          "Our team has never envisioned the tremendous feedback we’ve recieved from this platform. Beyond excited to see how this initiative can build a cleaner planet.",
+      },
+      {
+        timestamp: 1663300800000,
+        title: "Weather DAO’s committment",
+        description:
+          "We pledge to work with local environmental activists and the Singaporean government to push for sustainable energy in large manufacturing factories.",
+      },
+    ],
+    numDonations: 1200,
+    donations: [
+      {
+        donor: "mochi1",
+        amount: 4235,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "0xyee",
+        amount: 302,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "ape38",
+        amount: 1938,
+        timestamp: 1663300800000,
+      },
+    ],
   },
   {
     id: 3,
@@ -92,10 +160,44 @@ export const causes = [
       image: "/landing/pocky.png",
       name: "tosie",
     },
-    images: [],
-    tags: [],
+    location: "Queenstown, Singapore",
+    images: ["/causes/1.png", "/causes/2.png", "/causes/3.png"],
+    tags: ["Climate change", "Environment", "DAO"],
     createdAt: 1665633102063,
-    description: "",
+    description:
+      "The objective of this grant is to help WeatherDAO create sustainable solutions to the rising carbon emission rates in Singapore. WeatherDAO is an autonomous organization dedicated to make this world a cleaner place. \nWith crypto donations on the Klaytn network, we can grow the fund to support even more initiatives, pushing for clean energy reform.",
+    updates: [
+      {
+        timestamp: 1664596800000,
+        title: "Thank you for the incredible support! ✨",
+        description:
+          "Our team has never envisioned the tremendous feedback we’ve recieved from this platform. Beyond excited to see how this initiative can build a cleaner planet.",
+      },
+      {
+        timestamp: 1663300800000,
+        title: "Weather DAO’s committment",
+        description:
+          "We pledge to work with local environmental activists and the Singaporean government to push for sustainable energy in large manufacturing factories.",
+      },
+    ],
+    numDonations: 1200,
+    donations: [
+      {
+        donor: "mochi1",
+        amount: 4235,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "0xyee",
+        amount: 302,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "ape38",
+        amount: 1938,
+        timestamp: 1663300800000,
+      },
+    ],
   },
   {
     id: 4,
@@ -108,10 +210,44 @@ export const causes = [
       image: "/landing/pocky.png",
       name: "water.org",
     },
-    images: [],
-    tags: [],
+    location: "Queenstown, Singapore",
+    images: ["/causes/1.png", "/causes/2.png", "/causes/3.png"],
+    tags: ["Climate change", "Environment", "DAO"],
     createdAt: 1665633102063,
-    description: "",
+    description:
+      "The objective of this grant is to help WeatherDAO create sustainable solutions to the rising carbon emission rates in Singapore. WeatherDAO is an autonomous organization dedicated to make this world a cleaner place. \nWith crypto donations on the Klaytn network, we can grow the fund to support even more initiatives, pushing for clean energy reform.",
+    updates: [
+      {
+        timestamp: 1664596800000,
+        title: "Thank you for the incredible support! ✨",
+        description:
+          "Our team has never envisioned the tremendous feedback we’ve recieved from this platform. Beyond excited to see how this initiative can build a cleaner planet.",
+      },
+      {
+        timestamp: 1663300800000,
+        title: "Weather DAO’s committment",
+        description:
+          "We pledge to work with local environmental activists and the Singaporean government to push for sustainable energy in large manufacturing factories.",
+      },
+    ],
+    numDonations: 1200,
+    donations: [
+      {
+        donor: "mochi1",
+        amount: 4235,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "0xyee",
+        amount: 302,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "ape38",
+        amount: 1938,
+        timestamp: 1663300800000,
+      },
+    ],
   },
   {
     id: 5,
@@ -124,9 +260,43 @@ export const causes = [
       image: "/landing/pocky.png",
       name: "doodleapee124",
     },
-    images: [],
-    tags: [],
+    location: "Queenstown, Singapore",
+    images: ["/causes/1.png", "/causes/2.png", "/causes/3.png"],
+    tags: ["Climate change", "Environment", "DAO"],
     createdAt: 1665633102063,
-    description: "",
+    description:
+      "The objective of this grant is to help WeatherDAO create sustainable solutions to the rising carbon emission rates in Singapore. WeatherDAO is an autonomous organization dedicated to make this world a cleaner place. \nWith crypto donations on the Klaytn network, we can grow the fund to support even more initiatives, pushing for clean energy reform.",
+    updates: [
+      {
+        timestamp: 1664596800000,
+        title: "Thank you for the incredible support! ✨",
+        description:
+          "Our team has never envisioned the tremendous feedback we’ve recieved from this platform. Beyond excited to see how this initiative can build a cleaner planet.",
+      },
+      {
+        timestamp: 1663300800000,
+        title: "Weather DAO’s committment",
+        description:
+          "We pledge to work with local environmental activists and the Singaporean government to push for sustainable energy in large manufacturing factories.",
+      },
+    ],
+    numDonations: 1200,
+    donations: [
+      {
+        donor: "mochi1",
+        amount: 4235,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "0xyee",
+        amount: 302,
+        timestamp: 1663300800000,
+      },
+      {
+        donor: "ape38",
+        amount: 1938,
+        timestamp: 1663300800000,
+      },
+    ],
   },
 ];

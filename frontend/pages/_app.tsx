@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, Fade } from "@chakra-ui/react";
 
 import { WagmiConfig, createClient } from "wagmi";
 import { ConnectKitProvider, getDefaultClient } from "connectkit";
@@ -47,13 +47,15 @@ const theme = extendTheme({
   },
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   return (
     <WagmiConfig client={client}>
       <ConnectKitProvider theme="soft">
         <ChakraProvider theme={theme}>
           <Navbar />
-          <Component {...pageProps} />
+          <Fade key={router.route} in>
+            <Component {...pageProps} />
+          </Fade>
           <Footer />
         </ChakraProvider>
       </ConnectKitProvider>
