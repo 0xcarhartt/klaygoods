@@ -17,8 +17,13 @@ const Home: NextPage = () => {
       <Navbar />
       <main className={styles.main}>
         <LandingContainer />
-        <FeaturedCauses />
+        <FeaturedContainer />
+        <HowContainer />
       </main>
+      <HStack className={styles.footer}>
+        <Text>@ 2022 KlayGoods</Text>
+        <Text>Built with ♡ for Klaytn Hackathon</Text>
+      </HStack>
     </div>
   );
 };
@@ -75,7 +80,7 @@ function LandingContainer() {
   );
 }
 
-function FeaturedCauses() {
+function FeaturedContainer() {
   return (
     <HStack>
       <VStack gap="2rem">
@@ -185,6 +190,56 @@ function FeaturedCauses() {
         </HStack>
       </VStack>
     </HStack>
+  );
+}
+
+function HowContainer() {
+  return (
+    <VStack className={styles.howContainer}>
+      <Text className={styles.howTitle}>How does it work?</Text>
+      <HStack className={styles.howCell}>
+        <Image
+          alt="how 1"
+          src="/landing/how_1.png"
+          className={styles.howImage}
+        ></Image>
+        <VStack className={styles.howTextContainer}>
+          <Text className={styles.howCellTitle}>Fundraise</Text>
+          <Text className={styles.howCellDescription}>
+            Klaygoods is a platform where you can share your story and seek for
+            help
+          </Text>
+        </VStack>
+      </HStack>
+      <HStack className={styles.howCell}>
+        <Image
+          alt="how 2"
+          src="/landing/how_2.png"
+          className={styles.howImage}
+        ></Image>
+        <VStack className={styles.howTextContainer}>
+          <Text className={styles.howCellTitle}>Donate</Text>
+          <Text className={styles.howCellDescription}>
+            Our powerful tool will help you find the causes you care about the
+            most
+          </Text>
+        </VStack>
+      </HStack>
+      <HStack className={styles.howCell}>
+        <Image
+          alt="how 3"
+          src="/landing/how_3.png"
+          className={styles.howImage}
+        ></Image>
+        <VStack className={styles.howTextContainer}>
+          <Text className={styles.howCellTitle}>Governance</Text>
+          <Text className={styles.howCellDescription}>
+            KLAY token holders can select delegates to govern on their behalf,
+            voting on causes they care about
+          </Text>
+        </VStack>
+      </HStack>
+    </VStack>
   );
 }
 

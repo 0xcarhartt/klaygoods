@@ -9,6 +9,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 4rem;
 }
 
 .footer {
@@ -16,7 +17,7 @@
   flex: 1;
   padding: 2rem 0;
   border-top: 1px solid #eaeaea;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -144,7 +145,7 @@
   overflow: hidden;
   width: 130%;
   justify-content: center;
-  padding: 3rem;
+  padding-top: 3rem;
 }
 
 .featuredImage {
@@ -238,4 +239,35 @@
   justify-content: center;
   align-items: center;
   background: #ededed;
+}
+
+.howImage {
+  width: 500px;
+}
+
+.howTitle {
+  font-weight: 500;
+  font-size: 42px;
+}
+
+.howCellTitle {
+  font-weight: 700;
+  font-size: 35px;
+}
+
+.howCellDescription {
+  width: 530px;
+  font-weight: 500;
+  font-size: 28px;
+  color: #5a5a5a;
+}
+
+.howTextContainer {
+  padding: 0 0 0 4rem;
+  align-items: flex-start !important;
+}
+
+.howContainer {
+  gap: 5rem;
+  padding-bottom: 3rem;
 }
