@@ -116,3 +116,15 @@
   padding: 1rem 4rem;
   align-items: flex-start !important;
 }
+
+.loadMoreBtn {
+  width: 280px !important;
+  height: 50px !important;
+  background: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50px !important;
+  color: "black";
+
+  font-weight: 500;
+  font-size: 20px !important;
+}

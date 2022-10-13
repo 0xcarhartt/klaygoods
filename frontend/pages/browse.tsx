@@ -1,6 +1,17 @@
-import { SimpleGrid, VStack, HStack, Text, Image, Box } from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  VStack,
+  HStack,
+  Text,
+  Image,
+  Box,
+  Button,
+} from "@chakra-ui/react";
 import Navbar from "@components/Navbar";
 import styles from "@styles/Browse.module.css";
+import { Select } from "@chakra-ui/react";
+import Link from "next/link";
+import { causes } from "@data/causes";
 
 const tags = [
   {
@@ -17,125 +28,31 @@ const tags = [
   },
 ];
 
-const profiles = [
-  {
-    image: "/landing/pocky.png",
-    name: "0xpocky",
-  },
-  {
-    image: "/landing/carhartt.jpg",
-    name: "0xcarhartt",
-  },
-  {
-    image: "/landing/pocky.png",
-    name: "ethereumfoundation",
-  },
-  {
-    image: "/landing/pocky.png",
-    name: "tosie",
-  },
-  {
-    image: "/landing/pocky.png",
-    name: "water.org",
-  },
-  {
-    image: "/landing/pocky.png",
-    name: "doodleapee124",
-  },
-];
-
-const causes = [
-  {
-    image: "/landing/featured_1.png",
-    title: "Support WeatherDAO on decreasing carbon emissions",
-    last: 11,
-    donation: 145000,
-    goal: 300000,
-    profile: {
-      image: "/landing/pocky.png",
-      name: "0xpocky",
-    },
-  },
-  {
-    image: "/landing/featured_1.png",
-    title: "Legislative reform for New York’s air pollution",
-    last: 4,
-    donation: 7000,
-    goal: 120000,
-    profile: {
-      image: "/landing/carhartt.jpg",
-      name: "0xcarhartt",
-    },
-  },
-  {
-    image: "/landing/featured_1.png",
-    title: "Build better documentation for Ethereum foundation",
-    last: 1,
-    donation: 6000,
-    goal: 100000,
-    profile: {
-      image: "/landing/pocky.png",
-      name: "ethereumfoundation",
-    },
-  },
-  {
-    image: "/landing/featured_1.png",
-    title: "Free Solidity development courses in Southeast Asia",
-    last: 4,
-    donation: 12000,
-    goal: 50000,
-    profile: {
-      image: "/landing/pocky.png",
-      name: "tosie",
-    },
-  },
-  {
-    image: "/landing/featured_1.png",
-    title: "Support building water filters in Costa Rica",
-    last: 1,
-    donation: 6000,
-    goal: 10000,
-    profile: {
-      image: "/landing/pocky.png",
-      name: "water.org",
-    },
-  },
-  {
-    image: "/landing/featured_1.png",
-    title: "Push for economic and gender equality laws",
-    last: 4,
-    donation: 30000,
-    goal: 50000,
-    profile: {
-      image: "/landing/pocky.png",
-      name: "doodleapee124",
-    },
-  },
-];
-
 function Browse() {
   return (
     <div className={styles.container}>
       <VStack>
         <VStack className={styles.causeSectionTitleContainer}>
           <Text className={styles.causeSectionTitle}>Causes</Text>
-          <HStack className={styles.causeTagContainer}>
-            {tags.map(({ name, count }, idx) => {
-              return (
-                <HStack key={idx} className={styles.causeTag}>
-                  <Text className={styles.causeTagTitle}>{name}</Text>
-                  <VStack className={styles.causeTagCountContainer}>
-                    <Text className={styles.causeTagCount}>{count}</Text>
-                  </VStack>
-                </HStack>
-              );
-            })}
+          <HStack w="100%" justifyContent="space-between">
+            <HStack className={styles.causeTagContainer}>
+              {tags.map(({ name, count }, idx) => {
+                return (
+                  <HStack key={idx} className={styles.causeTag}>
+                    <Text className={styles.causeTagTitle}>{name}</Text>
+                    <VStack className={styles.causeTagCountContainer}>
+                      <Text className={styles.causeTagCount}>{count}</Text>
+                    </VStack>
+                  </HStack>
+                );
+              })}
+            </HStack>
           </HStack>
         </VStack>
-        <SimpleGrid columns={3} gap={10}>
-          {causes.map(
-            ({ image, title, last, donation, goal, profile }, idx) => (
-              <VStack key={idx} className={styles.causeContainer}>
+        <SimpleGrid columns={3} gap={10} pb={5}>
+          {causes.map(({ image, title, last, donation, goal, profile, id }) => (
+            <Link href={`/cause/${id}`} key={id}>
+              <VStack className={styles.causeContainer} cursor="pointer">
                 <HStack className={styles.profileCell}>
                   <Image
                     alt="0xcarhartt"
@@ -177,9 +94,10 @@ function Browse() {
                   </HStack>
                 </VStack>
               </VStack>
-            )
-          )}
+            </Link>
+          ))}
         </SimpleGrid>
+        <Button className={styles.loadMoreBtn}>Load more</Button>
       </VStack>
     </div>
   );
