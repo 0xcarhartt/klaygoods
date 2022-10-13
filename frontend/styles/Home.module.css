@@ -144,4 +144,98 @@
   overflow: hidden;
   width: 130%;
   justify-content: center;
+  padding: 3rem;
+}
+
+.featuredImage {
+  width: 480px;
+  height: 450px;
+}
+
+.featuredCause {
+  padding: 2rem;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 20px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.profileImage {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+}
+
+.profileCell {
+  padding: 0.5rem 1rem;
+  border: 1px solid #000000;
+  border-radius: 50px;
+}
+
+.profileName {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.featuredCauseTitle {
+  width: 450px;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 40px;
+  color: #000000;
+}
+
+.featuredRightSection {
+  padding: 3rem;
+  justify-content: flex-start;
+  align-items: flex-start !important;
+  gap: 1rem;
+}
+
+.progressBarContainer {
+  position: relative;
+  width: 400px;
+  height: 15px;
+
+  background: rgba(217, 217, 217, 0.59);
+  border-radius: 5px;
+}
+
+.progressBar {
+  position: absolute;
+  width: 75%;
+  height: 100%;
+
+  border-radius: 10px;
+  background: #e38627;
+}
+
+.donateBtn {
+  width: 280px !important;
+  height: 50px !important;
+  background: #dee830 !important;
+  border-radius: 50px !important;
+  color: #3d3d3d;
+
+  font-weight: 500;
+  font-size: 20px !important;
+}
+
+.featuredTitle {
+  width: 280px;
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 34px;
+  color: #1c1c1c;
+}
+
+.featuredBtn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background: #ededed;
 }
