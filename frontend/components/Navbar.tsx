@@ -4,11 +4,7 @@ import { HStack, Image, Text } from "@chakra-ui/react";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ConnectKitButton } from "connectkit";
 
-import { useAccount } from "wagmi";
-
 const Navbar = () => {
-  const { address } = useAccount();
-
   return (
     <HStack className={styles.navbar}>
       <Link href="/">

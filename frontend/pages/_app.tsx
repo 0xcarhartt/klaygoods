@@ -4,6 +4,8 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 import { WagmiConfig, createClient } from "wagmi";
 import { ConnectKitProvider, getDefaultClient } from "connectkit";
+import Navbar from "@components/Navbar";
+import Footer from "@components/Footer";
 
 const alchemyId = process.env.ALCHEMY_ID;
 
@@ -50,8 +52,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig client={client}>
       <ConnectKitProvider theme="soft">
         <ChakraProvider theme={theme}>
+          <Navbar />
           <Component {...pageProps} />
-          {/* <ConnectKitButton /> */}
+          <Footer />
         </ChakraProvider>
       </ConnectKitProvider>
     </WagmiConfig>

@@ -4,6 +4,7 @@ import Head from "next/head";
 import Navbar from "@components/Navbar";
 import styles from "@styles/Home.module.css";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
@@ -14,16 +15,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar />
       <main className={styles.main}>
         <LandingContainer />
         <FeaturedContainer />
         <HowContainer />
       </main>
-      <HStack className={styles.footer}>
-        <Text>@ 2022 KlayGoods</Text>
-        <Text>Built with ♡ for Klaytn Hackathon</Text>
-      </HStack>
     </div>
   );
 };
@@ -55,7 +51,9 @@ function LandingContainer() {
         <Text className={styles.landingSubtitle}>
           Help others in need with crypto or fundraise for your own cause
         </Text>
-        <Button className={styles.landingBtn}>Browse Causes</Button>
+        <Link href="/browse">
+          <Button className={styles.landingBtn}>Browse Causes</Button>
+        </Link>
       </VStack>
       <HStack gap={5}>
         <VStack gap={5}>
@@ -127,11 +125,7 @@ function FeaturedContainer() {
             </HStack>
 
             <HStack>
-              <Image
-                alt="money icon"
-                src="/landing/money.png"
-                width="20px"
-              ></Image>
+              <Image alt="money icon" src="/money.png" width="20px"></Image>
               <Text fontWeight={500} color="#5A5A5A">
                 $145,000 KLAY raised of $300,000 KLAY goal
               </Text>
@@ -175,11 +169,7 @@ function FeaturedContainer() {
             </HStack>
 
             <HStack>
-              <Image
-                alt="money icon"
-                src="/landing/money.png"
-                width="20px"
-              ></Image>
+              <Image alt="money icon" src="/money.png" width="20px"></Image>
               <Text fontWeight={500} color="#5A5A5A">
                 $145,000 KLAY raised of $300,000 KLAY goal
               </Text>
