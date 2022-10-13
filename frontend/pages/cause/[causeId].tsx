@@ -47,7 +47,7 @@ function Cause() {
   const descriptions = description.split("\n");
 
   return (
-    <VStack p="3rem">
+    <VStack minH="100vh" p="3rem">
       <VStack className={styles.titleContainer}>
         <Text className={styles.title}>{title}</Text>
         <Text className={styles.location}>{location}</Text>

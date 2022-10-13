@@ -6,10 +6,3 @@
   justify-content: space-between;
   align-items: center;
 }
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}

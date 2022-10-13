@@ -1,0 +1,169 @@
+.title {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 32px;
+}
+
+.inputContainer {
+  align-items: flex-start !important;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+.inputUnit {
+  position: absolute;
+  top: 53%;
+  right: 1.5rem;
+  font-weight: 500;
+  color: #5a5a5a;
+}
+
+.inputHeader {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 31px;
+  color: #5a5a5a;
+}
+
+.input {
+  width: 550px !important;
+  height: 75px !important;
+  padding: 0.5rem;
+  border-radius: 15px !important;
+  border: 2px solid black !important;
+  outline: none;
+}
+
+.input:focus {
+  border: 2px solid #dee830 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.textarea {
+  width: 550px !important;
+  height: 150px !important;
+  padding: 1rem;
+  border-radius: 15px !important;
+  border: 2px solid black !important;
+  outline: none;
+}
+
+.textarea:focus {
+  border: 2px solid #dee830 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.inputDescription {
+  width: 550px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 31px;
+  color: #939393;
+}
+
+.inputBox {
+  width: 550px;
+  height: 75px;
+  padding: 1rem;
+  border-radius: 15px;
+  border: 2px solid black !important;
+}
+
+.selectBox {
+  width: 550px;
+  height: 75px;
+  padding: 1rem;
+  border-radius: 15px;
+  border: 2px solid black !important;
+  cursor: pointer;
+}
+
+.selectionContainer {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  top: 140px;
+  width: 550px;
+  height: 300px;
+  overflow-y: scroll;
+  padding: 1rem;
+  border-radius: 15px;
+  border: 2px solid rgba(0, 0, 0, 0.2) !important;
+  user-select: none;
+}
+
+.selectionBox {
+  width: 550px;
+  padding: 1rem 2rem;
+  font-weight: 500;
+}
+
+.countriesBox {
+  width: 550px;
+  padding: 1rem 2rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.selectedContainer {
+  width: 450px;
+  overflow-x: scroll;
+}
+
+.chevronIcon {
+  position: absolute;
+  width: 24px !important;
+  height: 24px !important;
+  right: 1rem;
+}
+
+.klaytnLogo {
+  width: 20px;
+  height: 20px;
+}
+
+.donateBtn {
+  width: 100% !important;
+  height: 60px !important;
+  background: #dee830 !important;
+  border-radius: 50px !important;
+  color: #3d3d3d;
+
+  font-weight: 500;
+  font-size: 20px !important;
+}
+.progressContainer {
+  padding: 2rem;
+}
+
+.progressBarContainer {
+  position: relative;
+  width: 550px;
+  height: 5px;
+  background: rgba(217, 217, 217, 0.59);
+  border-radius: 5px;
+}
+
+.progressBar {
+  position: absolute;
+  height: 100%;
+
+  border-radius: 10px;
+  background: #e38627;
+}
+
+.progressBarDividers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+.progressBarDivider {
+  background: white;
+  width: 5px;
+  height: 5px;
+}

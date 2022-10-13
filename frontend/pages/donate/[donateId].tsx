@@ -17,44 +17,48 @@ import { useState } from "react";
 function Donate() {
   const router = useRouter();
   const { donateId } = router.query;
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState<number>();
+  const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(true);
 
   function handleAmountChange(e: any) {
     setAmount(e.target.value);
   }
 
-  const {
-    title,
-    location,
-    profile,
-    images,
-    tags,
-    createdAt,
-    description,
-    donation,
-    goal,
-    updates,
-    numDonations,
-    donations,
-  } = causes.find((cause) => (donateId as string) == String(cause.id));
+  const { title, profile, images, createdAt, donation, goal } = causes.find(
+    (cause) => (donateId as string) == String(cause.id)
+  );
 
-  function getFormattedDate(timestamp: number) {
-    const date = new Date(timestamp);
-    const month = date.toLocaleDateString("en-US", { month: "short" });
-    const day = date.getDate();
-    return `${month} ${day}`;
+  if (isTxnSuccessful) {
+    return (
+      <VStack minH="100vh" className={styles.successContainer}>
+        <Text className={styles.title}>Thank you!</Text>
+        <Image
+          alt="success image"
+          src="/success.png"
+          className={styles.successImage}
+        />
+        <Text className={styles.successText}>
+          Your donation of{" "}
+          <Text as="span" className={styles.successTextHeavy}>
+            2,500 KLAY
+          </Text>{" "}
+          has been successfully processed. Feel free to check out the reciept on
+          Etherscan.
+        </Text>
+        <VStack className={styles.buttonContainer}>
+          <Link href="/profile">
+            <Button className={styles.viewCauseBtn}>View my causes</Button>
+          </Link>
+          <Link href="/browse">
+            <Button className={styles.viewTxnBtn}>View transaction</Button>
+          </Link>
+        </VStack>
+      </VStack>
+    );
   }
-
-  function getFormattedDateNum(timestamp: number) {
-    return new Date(timestamp).toLocaleDateString();
-  }
-
-  const descriptions = description.split("\n");
-
-  console.log(!!amount);
 
   return (
-    <VStack p="3rem">
+    <VStack minH="100vh" p="2rem 3rem">
       <VStack className={styles.titleContainer}>
         <Text className={styles.title}>Donate</Text>
       </VStack>
@@ -89,6 +93,7 @@ function Donate() {
               onChange={handleAmountChange}
               className={styles.input}
             ></Input>
+            <Text className={styles.inputUnit}>KLAY</Text>
           </VStack>
           <HStack className={styles.checkboxContainer}>
             <Checkbox colorScheme="white" size="lg" />
@@ -123,7 +128,7 @@ function Donate() {
             ></Image>
             <VStack alignItems="flex-start" pl=".5rem">
               <Text className={styles.profileTitle}>
-                Initiative listed by {profile.name}
+                Initiative listed by @{profile.name}
               </Text>
               <HStack>
                 <Image

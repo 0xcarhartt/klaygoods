@@ -7,26 +7,10 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
-import Navbar from "@components/Navbar";
 import styles from "@styles/Browse.module.css";
-import { Select } from "@chakra-ui/react";
 import Link from "next/link";
 import { causes } from "@data/causes";
-
-const tags = [
-  {
-    name: "Disaster relief",
-    count: 134,
-  },
-  {
-    name: "Climate change",
-    count: 192,
-  },
-  {
-    name: "Economic inequality",
-    count: 92,
-  },
-];
+import { tags } from "@data/tags";
 
 function Browse() {
   return (

@@ -1,0 +1,291 @@
+.profileContainer {
+  width: 500px;
+  padding: 2rem;
+  background: #ffffff;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+.subtitleContainer {
+  padding: 1rem 1rem 0 1rem;
+  width: 100%;
+  align-items: flex-start !important;
+}
+
+.profileSubtitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 31px;
+  text-align: center;
+  color: #5a5a5a;
+}
+
+.profileUsername {
+  font-weight: 500;
+  font-size: 24px;
+  text-align: center;
+  color: #1c1c1c;
+}
+
+.profileLocation {
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+  color: #939393;
+}
+
+.bioTitle {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 32px;
+}
+
+.editBtn {
+  width: 280px !important;
+  height: 50px !important;
+  background: white !important;
+  border: 1px solid rgba(0, 0, 0, 1);
+  border-radius: 50px !important;
+  color: "black";
+
+  font-weight: 500;
+  font-size: 20px !important;
+}
+
+.titleContainer {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.bioHeader {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 31px;
+  color: #5a5a5a;
+}
+
+.bioText {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 31px;
+  color: #1c1c1c;
+  padding-bottom: 1rem;
+}
+
+.bioContainer {
+  width: 80%;
+  padding-left: 2rem;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: flex-start !important;
+}
+
+.tagContainer {
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+.causeTag {
+  padding: 0.5rem 1.5rem;
+  background: #ffffff;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 31px;
+  text-align: center;
+  color: #000000;
+}
+
+.donationHeader {
+  width: 100%;
+  padding: 2rem;
+  background: #1c1c1c;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+.donationHeaderTitle {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  color: #ffffff;
+}
+
+.donationHeaderSubtitle {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  color: #939393;
+}
+
+.sectionTitleContainer {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitleRightContainer {
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.sectionCount {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background: #ededed;
+}
+
+.sectionCountText {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 31px;
+  text-align: center;
+  color: #000000;
+}
+
+.profileBioSection {
+  padding-bottom: 3rem;
+}
+
+.causeCarousel {
+  padding: 2rem;
+  width: 1350px;
+  overflow-x: scroll;
+  gap: 1rem;
+}
+
+.profileImage {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+}
+
+.profileCell {
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.2);
+  top: 1rem;
+  left: 1rem;
+}
+
+.profileName {
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+}
+
+.causeContainer {
+  width: 400px;
+  height: 580px;
+  position: relative;
+  border-radius: 20px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+}
+
+.causeImage {
+  margin: 0 !important;
+  width: 100%;
+  height: 60%;
+  border-radius: 20px 20px 0 0;
+}
+
+.causeTitle {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.progressBarContainer {
+  position: relative;
+  width: 350px;
+  height: 15px;
+
+  background: rgba(217, 217, 217, 0.59);
+  border-radius: 5px;
+}
+
+.progressBar {
+  position: absolute;
+  width: 75%;
+  height: 100%;
+
+  border-radius: 10px;
+  background: #e38627;
+}
+
+.causeSubtitle {
+  font-weight: 500;
+  font-size: 18px;
+  color: #939393;
+}
+
+.causeTextContainer {
+  padding: 1rem 1.5rem;
+  align-items: flex-start !important;
+  gap: 0.3rem;
+}
+
+.causeSectionTitle {
+  font-weight: 500;
+  font-size: 48px;
+}
+
+.causeTag {
+  padding: 0.5rem 1.5rem;
+  gap: 20px;
+  background: #ffffff;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+}
+
+.causeTagTitle {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.causeTagCount {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.causeTagCountContainer {
+  padding: 1.5rem;
+  height: 45px;
+  background: #ededed;
+  border-radius: 50px;
+  justify-content: center;
+}
+
+.causeTagContainer {
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start !important;
+}
+
+.causeSectionTitleContainer {
+  width: 100%;
+  padding: 1rem 4rem;
+  align-items: flex-start !important;
+}
+
+.loadMoreBtn {
+  width: 280px !important;
+  height: 50px !important;
+  background: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50px !important;
+  color: "black";
+
+  font-weight: 500;
+  font-size: 20px !important;
+}
