@@ -30,7 +30,7 @@ function Donate() {
 
   if (isTxnSuccessful) {
     return (
-      <VStack minH="100vh" className={styles.successContainer}>
+      <VStack minH="100vh" pt="2rem" className={styles.successContainer}>
         <Text className={styles.title}>Thank you!</Text>
         <Image
           alt="success image"
@@ -46,7 +46,7 @@ function Donate() {
           Etherscan.
         </Text>
         <VStack className={styles.buttonContainer}>
-          <Link href="/profile">
+          <Link href="/browse">
             <Button className={styles.viewCauseBtn}>View my causes</Button>
           </Link>
           <Link href="/browse">

@@ -17,7 +17,9 @@ const Navbar = () => {
       </Link>
       <HStack className={styles.navTabs}>
         <Text>Governance</Text>
-        <Text>List Cause</Text>
+        <Link href="/list">
+          <Text cursor="pointer">List Cause</Text>
+        </Link>
         <ConnectKitButton />
       </HStack>
     </HStack>

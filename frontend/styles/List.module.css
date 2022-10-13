@@ -135,6 +135,7 @@
   font-weight: 500;
   font-size: 20px !important;
 }
+
 .progressContainer {
   padding: 2rem;
 }
@@ -153,6 +154,7 @@
 
   border-radius: 10px;
   background: #e38627;
+  transition: 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .progressBarDividers {
@@ -166,4 +168,163 @@
   background: white;
   width: 5px;
   height: 5px;
+}
+
+.fileUploader {
+  width: 623px;
+  height: 100px;
+  border: 3px solid #000000;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 31px;
+  color: #1c1c1c;
+  cursor: pointer;
+}
+
+.fileUploader::-webkit-file-upload-button {
+  display: none;
+}
+
+.fileUploader[type="file"] {
+  color: transparent;
+}
+
+.fileUploaderText {
+  position: absolute;
+  top: 1.8rem;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 3rem;
+  z-index: -1;
+}
+
+.fileUploadContainer {
+  position: relative;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 31px;
+}
+
+.fileUploaderIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.previewImageContainer {
+  position: relative;
+}
+
+.closeBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background: #ededed;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.previewImage {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+}
+
+.reviewSubtitle {
+  width: 600px;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 31px;
+  color: #5a5a5a;
+  padding: 2rem 0 1rem 0;
+}
+
+.subtitle {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 41px;
+  text-align: center;
+  color: #1c1c1c;
+}
+
+.editBtn {
+  text-decoration: underline;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 31px;
+  text-align: center;
+  text-decoration-line: underline;
+  color: #1c1c1c;
+}
+
+.subtitleContainer {
+  width: 100%;
+  padding-top: 1rem;
+  justify-content: space-between;
+}
+
+.reviewContainer {
+  align-items: flex-start !important;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  width: 100%;
+  position: relative;
+}
+
+.causeTag {
+  padding: 0.5rem 1.5rem;
+  gap: 20px;
+  font-weight: 500;
+  background: #ffffff;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+}
+
+.successContainer {
+  gap: 2rem;
+  padding-bottom: 3rem;
+}
+
+.successImage {
+  width: 700px;
+}
+
+.successText {
+  width: 600px;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  color: #5a5a5a;
+}
+
+.viewCauseBtn {
+  width: 400px !important;
+  padding: 2rem;
+  background: #1c1c1c !important;
+  border-radius: 50px !important;
+  color: white;
+  font-weight: 500;
+  font-size: 20px !important;
+}
+
+.viewTxnBtn {
+  width: 400px !important;
+  padding: 2rem;
+  background: white !important;
+  border: 2px solid #1c1c1c;
+  border-radius: 50px !important;
+  color: black;
+  font-weight: 500;
+  font-size: 20px !important;
+}
+
+.buttonContainer {
+  gap: 0.5rem;
 }

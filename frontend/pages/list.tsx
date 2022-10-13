@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   VStack,
   Text,
@@ -12,18 +12,82 @@ import {
   Divider,
   Highlight,
   Textarea,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { categories } from "@data/categories";
 import { countries } from "@data/countries";
+import { tags } from "@data/tags";
 import styles from "@styles/List.module.css";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 function List() {
   const [amount, setAmount] = useState<number>();
-  const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(true);
+  const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(false);
+
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const router = useRouter();
 
   function handleAmountChange(e: any) {
     setAmount(e.target.value);
+  }
+
+  if (isTxnSuccessful)
+    return (
+      <VStack minH="100vh" pt="2rem" className={styles.successContainer}>
+        <Text className={styles.title}>Congrats, your cause is listed!</Text>
+        <Image
+          alt="success image"
+          src="/success.png"
+          className={styles.successImage}
+        />
+        <Text className={styles.successText}>
+          <Text as="span" className={styles.successTextHeavy}>
+            Saving polar bears in Antartica
+          </Text>{" "}
+          has been successfully listed on Klaygoods. You can edit the cause
+          anytime.
+        </Text>
+        <VStack className={styles.buttonContainer}>
+          <Link href="/profile">
+            <Button className={styles.viewCauseBtn}>View cause</Button>
+          </Link>
+          <Link href="/profile">
+            <Button className={styles.viewTxnBtn}>Edit cause</Button>
+          </Link>
+        </VStack>
+      </VStack>
+    );
+
+  if (currentStep === 4)
+    return <ReviewCause setTxnSuccessful={setTxnSuccessful} />;
+
+  function getComponent() {
+    switch (currentStep) {
+      case 0:
+        return (
+          <StepOne
+            handleAmountChange={handleAmountChange}
+            amount={amount}
+            setCurrentStep={setCurrentStep}
+          />
+        );
+
+      case 1:
+        return (
+          <StepTwo
+            handleAmountChange={handleAmountChange}
+            amount={amount}
+            setCurrentStep={setCurrentStep}
+          />
+        );
+      case 2:
+        return <StepThree setCurrentStep={setCurrentStep} />;
+      case 3:
+        return <StepFour setCurrentStep={setCurrentStep} />;
+    }
   }
 
   return (
@@ -35,21 +99,22 @@ function List() {
           <Box
             style={{
               backgroundColor: "black",
-              width: `${(0.5 * 100).toFixed(0)}%`,
+              width: `${(((currentStep + 1) / 4) * 100).toFixed(0)}%`,
             }}
             className={`${styles.progressBar}`}
           ></Box>
           <HStack className={styles.progressBarDividers}>
+            <Box pl="6px">
+              <Box className={styles.progressBarDivider}></Box>
+            </Box>
             <Box className={styles.progressBarDivider}></Box>
-            <Box className={styles.progressBarDivider}></Box>
-            <Box className={styles.progressBarDivider}></Box>
+            <Box pr="7px">
+              <Box className={styles.progressBarDivider}></Box>
+            </Box>
           </HStack>
         </Box>
       </VStack>
-
-      {/* <StepOne handleAmountChange={handleAmountChange} amount={amount} /> */}
-      {/* <StepTwo handleAmountChange={handleAmountChange} amount={amount} /> */}
-      <StepThree />
+      {getComponent()}
     </VStack>
   );
 }
@@ -57,9 +122,10 @@ function List() {
 type StepOneProps = {
   handleAmountChange: (e: any) => void;
   amount: number;
+  setCurrentStep: (step: any) => void;
 };
 
-function StepOne({ handleAmountChange, amount }: StepOneProps) {
+function StepOne({ handleAmountChange, amount, setCurrentStep }: StepOneProps) {
   return (
     <VStack>
       <VStack pb="2rem">
@@ -97,27 +163,11 @@ function StepOne({ handleAmountChange, amount }: StepOneProps) {
           <Text className={styles.inputUnit}>KLAY</Text>
         </VStack>
       </VStack>
-      <Button disabled={!amount} className={styles.donateBtn}>
-        Next
-      </Button>
-    </VStack>
-  );
-}
-
-function StepThree() {
-  return (
-    <VStack>
-      <VStack pb="2rem">
-        <VStack className={styles.inputContainer}>
-          <Text className={styles.inputHeader}>Description</Text>
-          <Textarea onChange={() => {}} className={styles.textarea}></Textarea>
-          <Text className={styles.inputDescription}>
-            This text will show up in the “About” section of your cause detail
-            page.
-          </Text>
-        </VStack>
-      </VStack>
-      <Button disabled={false} className={styles.donateBtn}>
+      <Button
+        disabled={!amount}
+        className={styles.donateBtn}
+        onClick={() => setCurrentStep((prev) => prev + 1)}
+      >
         Next
       </Button>
     </VStack>
@@ -127,9 +177,10 @@ function StepThree() {
 type StepTwoProps = {
   handleAmountChange: (e: any) => void;
   amount: number;
+  setCurrentStep: (step: any) => void;
 };
 
-function StepTwo({ handleAmountChange, amount }: StepTwoProps) {
+function StepTwo({ handleAmountChange, amount, setCurrentStep }: StepTwoProps) {
   const [isCategoriesVisible, setCategoriesVisible] = useState<boolean>();
   const [isCountriesVisible, setCountriesVisible] = useState<boolean>();
   const [selectedCategories, setSelectedCategories] = useState({});
@@ -242,9 +293,243 @@ function StepTwo({ handleAmountChange, amount }: StepTwoProps) {
           )}
         </VStack>
       </VStack>
-      <Button disabled={!isValidForm} className={styles.donateBtn}>
+      <Button
+        disabled={!isValidForm}
+        className={styles.donateBtn}
+        onClick={() => setCurrentStep((prev) => prev + 1)}
+      >
         Next
       </Button>
+    </VStack>
+  );
+}
+
+type StepThreeProps = {
+  setCurrentStep: (step: any) => void;
+};
+
+function StepThree({ setCurrentStep }: StepThreeProps) {
+  return (
+    <VStack>
+      <VStack pb="2rem">
+        <VStack className={styles.inputContainer}>
+          <Text className={styles.inputHeader}>Description</Text>
+          <Textarea onChange={() => {}} className={styles.textarea}></Textarea>
+          <Text className={styles.inputDescription}>
+            This text will show up in the “About” section of your cause detail
+            page.
+          </Text>
+        </VStack>
+      </VStack>
+      <Button
+        disabled={false}
+        className={styles.donateBtn}
+        onClick={() => setCurrentStep((prev) => prev + 1)}
+      >
+        Next
+      </Button>
+    </VStack>
+  );
+}
+
+type StepFourProps = {
+  setCurrentStep: (step: any) => void;
+};
+
+function StepFour({ setCurrentStep }: StepFourProps) {
+  const [files, setFiles] = useState<string[]>([]);
+
+  function handleFileUpload(e) {
+    setFiles((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
+  }
+
+  return (
+    <VStack>
+      <VStack pb="2rem">
+        <VStack className={styles.inputContainer}>
+          <Text className={styles.inputHeader}>Add images</Text>
+          <VStack className={styles.fileUploadContainer}>
+            <input
+              type="file"
+              name="images"
+              id="images"
+              required
+              multiple
+              onChange={handleFileUpload}
+              className={styles.fileUploader}
+            />
+            <HStack className={styles.fileUploaderText}>
+              <Text>Browse from computer</Text>
+              <Image
+                alt="upload"
+                src="/upload.png"
+                className={styles.fileUploaderIcon}
+              ></Image>
+            </HStack>
+          </VStack>
+          <Text className={styles.inputDescription}>
+            Select up to 3 images to showcase your cause.
+          </Text>
+          <SimpleGrid columns={3} gap={3}>
+            {files.map((file) => (
+              <VStack key={file} className={styles.previewImageContainer}>
+                <VStack className={styles.closeBtn}>
+                  <CloseIcon w={3} h={3} />
+                </VStack>
+                <Image
+                  alt="uploaded file"
+                  src={file ?? ""}
+                  className={styles.previewImage}
+                />
+              </VStack>
+            ))}
+          </SimpleGrid>
+        </VStack>
+      </VStack>
+      <Button
+        disabled={false}
+        className={styles.donateBtn}
+        onClick={() => setCurrentStep((prev) => prev + 1)}
+      >
+        Next
+      </Button>
+    </VStack>
+  );
+}
+
+type ReviewCauseProps = {
+  setTxnSuccessful: (bool: boolean) => void;
+};
+
+function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+    });
+  };
+
+  return (
+    <VStack minH="100vh" p="2rem 4rem 3rem 4rem">
+      <VStack>
+        <Text className={styles.title}>Review your cause</Text>
+        <Text className={styles.reviewSubtitle}>
+          You can make changes to your campaign at any time. The platform is
+          free for organizers, but we take 2% fee of the donation for the
+          KlayGoods treasury. Learn more
+        </Text>
+        <HStack className={styles.subtitleContainer}>
+          <Text className={styles.subtitle}>Your cause</Text>
+          <Text className={styles.editBtn}>Edit</Text>
+        </HStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>Default Network</Text>
+          <HStack>
+            <Image
+              alt="klaytn logo"
+              src="/klaytn.png"
+              className={styles.klaytnLogo}
+            ></Image>
+            <Text fontWeight={500}>Klaytn</Text>
+          </HStack>
+          <Divider />
+        </VStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>Currency</Text>
+          <HStack>
+            <Image
+              alt="klaytn logo"
+              src="/klaytn.png"
+              className={styles.klaytnLogo}
+            ></Image>
+            <Text fontWeight={500}>KLAY</Text>
+          </HStack>
+          <Divider />
+        </VStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>Fundraising goal</Text>
+          <Text fontWeight={500}>25000 KLAY</Text>
+          <Divider />
+        </VStack>
+
+        <HStack className={styles.subtitleContainer}>
+          <Text className={styles.subtitle}>Campaign Info</Text>
+          <Text className={styles.editBtn}>Edit</Text>
+        </HStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>Campaign title</Text>
+          <HStack>
+            <Text fontWeight={500}>Ssaving the polar bears in Antarctica</Text>
+          </HStack>
+          <Divider />
+        </VStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>Choose categories</Text>
+          <HStack className={styles.tagContainer}>
+            {tags.map((tag, idx) => (
+              <Text key={idx} className={styles.causeTag}>
+                {tag.name}
+              </Text>
+            ))}
+          </HStack>
+          <Divider />
+        </VStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>Location</Text>
+          <Text fontWeight={500}>United States</Text>
+          <Divider />
+        </VStack>
+
+        <HStack className={styles.subtitleContainer}>
+          <Text className={styles.subtitle}>Description</Text>
+          <Text className={styles.editBtn}>Edit</Text>
+        </HStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>About</Text>
+          <HStack>
+            <Text fontWeight={500} w="600px">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Text>
+          </HStack>
+          <Divider />
+        </VStack>
+
+        <HStack className={styles.subtitleContainer}>
+          <Text className={styles.subtitle}>Cover image</Text>
+          <Text className={styles.editBtn}>Edit</Text>
+        </HStack>
+        <VStack className={styles.reviewContainer}>
+          <Text className={styles.inputHeader}>3 images uploaded</Text>
+          <SimpleGrid columns={3} gap={3}>
+            {/* {files.map((file) => (
+            <VStack key={file} className={styles.previewImageContainer}>
+              <VStack className={styles.closeBtn}>
+                <CloseIcon w={3} h={3} />
+              </VStack>
+              <Image
+                alt="uploaded file"
+                src={file ?? ""}
+                className={styles.previewImage}
+              />
+            </VStack>
+          ))} */}
+          </SimpleGrid>
+          <Divider />
+        </VStack>
+
+        <Button
+          disabled={false}
+          className={styles.donateBtn}
+          onClick={() => {
+            scrollToTop();
+            setTxnSuccessful(true);
+          }}
+        >
+          List cause
+        </Button>
+      </VStack>
     </VStack>
   );
 }
