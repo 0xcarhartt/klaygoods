@@ -13,11 +13,14 @@ import { causes } from "@data/causes";
 import styles from "@styles/Donate.module.css";
 import Link from "next/link";
 import { Checkbox } from "@chakra-ui/react";
-import { useState } from "react";
 import { useKlaytn } from "@components/KlaytnProvider";
 import { numberWithCommas } from "@utils/utils";
 import { ScaleFade } from "@chakra-ui/react";
 import { ethers } from "ethers";
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import db from "@firebase/firebase";
+import { abridgeAddress } from "@components/Navbar";
 
 function Donate() {
   const router = useRouter();
@@ -25,20 +28,52 @@ function Donate() {
   const [amount, setAmount] = useState<number>();
   const [txnHash, setTxnHash] = useState<boolean>(false);
   const { provider, address } = useKlaytn();
+  const [fetchedCause, setFetchedCause] = useState<any>();
 
   function handleAmountChange(e: any) {
     setAmount(Number(e.target.value));
   }
 
+  useEffect(() => {
+    async function fetchCauseinfo() {
+      if (!donateId) return;
+      const docRef = doc(db, "causes", donateId as string);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log("fetchedcause: ", data);
+        setFetchedCause(data);
+      } else {
+        console.log("No such document!");
+      }
+    }
+    fetchCauseinfo();
+  }, [address, donateId]);
+
   if (!donateId) return;
-  const { title, profile, images, createdAt, donation, goal } = causes.find(
-    (cause) => (donateId as string) == String(cause.id)
-  );
+
+  if (!fetchedCause) return null;
+
+  const {
+    title,
+    recipient,
+    owner,
+    numDonations,
+    location,
+    images,
+    goal,
+    donations,
+    donation,
+    description,
+    categories,
+    updates,
+    createdAt,
+  } = fetchedCause;
 
   async function donateTxn() {
     const transactionParameters = {
       gas: "0x5208",
-      to: "0x224fc9662D0FE47cFC5bA947CDa724C6f317b66c",
+      to: recipient ?? "0x224fc9662D0FE47cFC5bA947CDa724C6f317b66c",
       from: address,
       value: ethers.utils.parseEther(amount.toFixed(2)).toHexString(),
     };
@@ -58,6 +93,15 @@ function Donate() {
       console.log(err);
     }
   }
+
+  if (!address)
+    return (
+      <VStack minH="100vh" pt="200px">
+        <Text className={styles.title}>
+          Please connect wallet to donate to cause.
+        </Text>
+      </VStack>
+    );
 
   if (!!txnHash) {
     return (
@@ -163,13 +207,13 @@ function Donate() {
           <Text className={styles.causeTitle}>{title}</Text>
           <HStack className={styles.profileContainer}>
             <Image
-              alt={`profile ${profile.name}`}
-              src={profile.image}
-              className={styles.profileImage}
+              alt={`profile ${owner.name}`}
+              src={owner.image}
+              className={styles.ownerImage}
             ></Image>
             <VStack alignItems="flex-start" pl=".5rem">
               <Text className={styles.profileTitle}>
-                Initiative listed by @{profile.name}
+                Initiative listed by @{owner.name}
               </Text>
               <HStack>
                 <Image

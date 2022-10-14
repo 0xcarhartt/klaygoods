@@ -24,6 +24,7 @@ import { doc, setDoc } from "firebase/firestore";
 import db from "@firebase/firebase";
 import { Web3Storage } from "web3.storage";
 import { abridgeAddress } from "@components/Navbar";
+import { useKlaytn } from "@components/KlaytnProvider";
 
 const WEB3_STORAGE_TOKEN = process.env.NEXT_PUBLIC_WEB3_STORAGE_API_KEY;
 
@@ -33,7 +34,8 @@ const client = new Web3Storage({
 });
 
 function List() {
-  const [address, setAddress] = useState<string>("");
+  const { address } = useKlaytn();
+  const [recipient, setRecipient] = useState<string>("");
   const [amount, setAmount] = useState<number>();
   const [title, setTitle] = useState("");
   const [goal, setGoal] = useState<number>(0);
@@ -49,7 +51,7 @@ function List() {
   const [currentStep, setCurrentStep] = useState(0);
 
   function handleAddressChange(e: any) {
-    setAddress(e.target.value);
+    setRecipient(e.target.value);
   }
 
   function handleGoalChange(e: any) {
@@ -88,8 +90,8 @@ function List() {
       const docRef = doc(db, "causes", id);
       await setDoc(docRef, {
         id: id,
-        recipient: address,
-        owner: { name: abridgeAddress(address), image: "/newuser.png" },
+        recipient: recipient,
+        owner: { name: abridgeAddress(recipient), image: "/newuser.png" },
         goal: goal,
         title: title,
         description: description,
@@ -105,7 +107,7 @@ function List() {
     },
     [
       CIDs,
-      address,
+      recipient,
       description,
       goal,
       selectedCategories,
@@ -113,6 +115,15 @@ function List() {
       title,
     ]
   );
+
+  if (!address)
+    return (
+      <VStack minH="100vh" pt="200px">
+        <Text className={styles.title}>
+          Please connect wallet to list cause.
+        </Text>
+      </VStack>
+    );
 
   if (isTxnSuccessful)
     return (
@@ -172,7 +183,7 @@ function List() {
             setTxnSuccessful={setTxnSuccessful}
             categories={Object.keys(selectedCategories)}
             country={selectedCountry}
-            address={address}
+            address={recipient}
             title={title}
             goal={goal}
             description={description}

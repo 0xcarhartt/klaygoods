@@ -23,6 +23,15 @@ const Navbar = () => {
     }
   }
 
+  async function handleDisconnect() {
+    try {
+      setAddress("");
+      window.localStorage.setItem("KLAYTN_ADDRESS", "");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <HStack className={styles.navbar}>
       <Link href="/">
@@ -50,7 +59,11 @@ const Navbar = () => {
           <Text cursor="pointer">List Cause</Text>
         </Link>
         {address ? (
-          <VStack className={styles.addressPill}>
+          <VStack
+            className={styles.addressPill}
+            onClick={handleDisconnect}
+            cursor="pointer"
+          >
             <Text>{abridgeAddress(address)}</Text>
           </VStack>
         ) : (

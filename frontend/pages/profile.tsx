@@ -22,78 +22,87 @@ function Profile() {
 
   return (
     <VStack minH="100vh" p="2rem 4rem">
-      <VStack>
-        <HStack className={styles.profileBioSection}>
-          <VStack className={styles.profileContainer}>
-            <Image alt="profile" src="/mochi.png"></Image>
-            <Text className={styles.profileUsername}>
-              {abridgeAddress(address)}
-            </Text>
-            {/* <Text className={styles.profileLocation}>New York, NY</Text> */}
-            <Divider />
-            <VStack className={styles.subtitleContainer}>
-              <HStack>
-                <Image alt="badge" src="/badge.png" w="20px" />
-                <Text className={styles.profileSubtitle}>Newbie Giver</Text>
-              </HStack>
-              <HStack>
-                <Image alt="user" src="/user.png" w="20px" />
-                <Text className={styles.profileSubtitle}>
-                  Joined in October 2022
+      {!address ? (
+        <VStack pt="200px">
+          <Text className={styles.bioTitle}>
+            Please connect wallet to view profile.
+          </Text>
+        </VStack>
+      ) : (
+        <VStack>
+          <HStack className={styles.profileBioSection}>
+            <VStack className={styles.profileContainer}>
+              <Image alt="profile" src="/mochi.png"></Image>
+              <Text className={styles.profileUsername}>
+                {abridgeAddress(address)}
+              </Text>
+              {/* <Text className={styles.profileLocation}>New York, NY</Text> */}
+              <Divider />
+              <VStack className={styles.subtitleContainer}>
+                <HStack>
+                  <Image alt="badge" src="/badge.png" w="20px" />
+                  <Text className={styles.profileSubtitle}>Newbie Giver</Text>
+                </HStack>
+                <HStack>
+                  <Image alt="user" src="/user.png" w="20px" />
+                  <Text className={styles.profileSubtitle}>
+                    Joined in October 2022
+                  </Text>
+                </HStack>
+              </VStack>
+            </VStack>
+            <VStack className={styles.bioContainer}>
+              <HStack className={styles.titleContainer}>
+                <Text className={styles.bioTitle}>
+                  User {abridgeAddress(address)}
                 </Text>
+              </HStack>
+              <Text className={styles.bioHeader}>About</Text>
+              <Text className={styles.bioText}></Text>
+              <Text className={styles.bioHeader}>
+                Areas I am passionate about:
+              </Text>
+              <HStack className={styles.tagContainer}>
+                {tags.map((tag, idx) => (
+                  <Text key={idx} className={styles.causeTag}>
+                    {tag.name}
+                  </Text>
+                ))}
+              </HStack>
+              <HStack w="100%" gap={2}>
+                <VStack className={styles.donationHeader}>
+                  <Text className={styles.donationHeaderTitle}>0 KLAY</Text>
+                  <Text className={styles.donationHeaderSubtitle}>
+                    Total donation amount
+                  </Text>
+                </VStack>
+
+                <VStack className={styles.donationHeader}>
+                  <Text className={styles.donationHeaderTitle}>0</Text>
+                  <Text className={styles.donationHeaderSubtitle}>
+                    Donations
+                  </Text>
+                </VStack>
               </HStack>
             </VStack>
-          </VStack>
-          <VStack className={styles.bioContainer}>
-            <HStack className={styles.titleContainer}>
-              <Text className={styles.bioTitle}>
-                User {abridgeAddress(address)}
-              </Text>
-            </HStack>
-            <Text className={styles.bioHeader}>About</Text>
-            <Text className={styles.bioText}></Text>
-            <Text className={styles.bioHeader}>
-              Areas I am passionate about:
-            </Text>
-            <HStack className={styles.tagContainer}>
-              {tags.map((tag, idx) => (
-                <Text key={idx} className={styles.causeTag}>
-                  {tag.name}
-                </Text>
-              ))}
-            </HStack>
-            <HStack w="100%" gap={2}>
-              <VStack className={styles.donationHeader}>
-                <Text className={styles.donationHeaderTitle}>0 KLAY</Text>
-                <Text className={styles.donationHeaderSubtitle}>
-                  Total donation amount
-                </Text>
-              </VStack>
-
-              <VStack className={styles.donationHeader}>
-                <Text className={styles.donationHeaderTitle}>0</Text>
-                <Text className={styles.donationHeaderSubtitle}>Donations</Text>
-              </VStack>
-            </HStack>
-          </VStack>
-        </HStack>
-
-        <VStack>
-          <HStack className={styles.sectionTitleContainer}>
-            <HStack className={styles.sectionTitleRightContainer}>
-              <Text className={styles.sectionTitle}>
-                {"Causes I've listed"}
-              </Text>
-              <VStack className={styles.sectionCount}>
-                <Text className={styles.sectionCountText}>0</Text>
-              </VStack>
-            </HStack>
-            <Link href={`/list`}>
-              <Button className={styles.editBtn}>List cause</Button>
-            </Link>
           </HStack>
-          <HStack className={styles.causeCarousel}>
-            {/* {myCauses.map(
+
+          <VStack>
+            <HStack className={styles.sectionTitleContainer}>
+              <HStack className={styles.sectionTitleRightContainer}>
+                <Text className={styles.sectionTitle}>
+                  {"Causes I've listed"}
+                </Text>
+                <VStack className={styles.sectionCount}>
+                  <Text className={styles.sectionCountText}>0</Text>
+                </VStack>
+              </HStack>
+              <Link href={`/list`}>
+                <Button className={styles.editBtn}>List cause</Button>
+              </Link>
+            </HStack>
+            <HStack className={styles.causeCarousel}>
+              {/* {myCauses.map(
               ({ image, title, last, donation, goal, profile, id }) => (
                 <Link href={`/cause/${id}`} key={id}>
                   <VStack className={styles.causeContainer} cursor="pointer">
@@ -135,23 +144,23 @@ function Profile() {
                 </Link>
               )
             )} */}
-          </HStack>
-        </VStack>
-
-        <VStack pt="1rem">
-          <HStack className={styles.sectionTitleContainer}>
-            <HStack className={styles.sectionTitleRightContainer}>
-              <Text className={styles.sectionTitle}>
-                {"Causes I've supported"}
-              </Text>
-              <VStack className={styles.sectionCount}>
-                <Text className={styles.sectionCountText}>0</Text>
-              </VStack>
             </HStack>
-          </HStack>
+          </VStack>
 
-          <HStack className={styles.causeCarousel}>
-            {/* {supportedCauses.map(
+          <VStack pt="1rem">
+            <HStack className={styles.sectionTitleContainer}>
+              <HStack className={styles.sectionTitleRightContainer}>
+                <Text className={styles.sectionTitle}>
+                  {"Causes I've supported"}
+                </Text>
+                <VStack className={styles.sectionCount}>
+                  <Text className={styles.sectionCountText}>0</Text>
+                </VStack>
+              </HStack>
+            </HStack>
+
+            <HStack className={styles.causeCarousel}>
+              {/* {supportedCauses.map(
               ({ image, title, last, donation, goal, profile, id }) => (
                 <Link href={`/cause/${id}`} key={id}>
                   <VStack className={styles.causeContainer} cursor="pointer">
@@ -203,9 +212,10 @@ function Profile() {
                 </Link>
               )
             )} */}
-          </HStack>
+            </HStack>
+          </VStack>
         </VStack>
-      </VStack>
+      )}
     </VStack>
   );
 }
