@@ -1,4 +1,12 @@
-import { VStack, Text, HStack, Image, Box, Button } from "@chakra-ui/react";
+import {
+  VStack,
+  Text,
+  HStack,
+  Image,
+  Box,
+  Button,
+  Link as ChakraLink,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { causes } from "@data/causes";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
@@ -13,34 +21,61 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { numberWithCommas } from "@utils/utils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useKlaytn } from "@components/KlaytnProvider";
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import db from "@firebase/firebase";
+import { abridgeAddress } from "@components/Navbar";
 
 function Cause() {
   const { address } = useKlaytn();
   const router = useRouter();
   const { causeId } = router.query;
+  const [fetchedCause, setFetchedCause] = useState<any>();
 
-  if (!causeId) return;
+  useEffect(() => {
+    async function fetchCauseinfo() {
+      if (!causeId) return;
+      const docRef = doc(db, "causes", causeId as string);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log("fetchedcause: ", data);
+        setFetchedCause(data);
+      } else {
+        console.log("No such document!");
+      }
+    }
+    fetchCauseinfo();
+  }, [address, causeId]);
+
+  if (!causeId) return null;
 
   if (Number(causeId as string) === 7) return <SampleCause />;
 
+  if (!fetchedCause) return null;
+
   const {
     title,
-    location,
-    profile,
-    images,
-    tags,
-    createdAt,
-    description,
-    donation,
-    goal,
-    updates,
+    recipient,
+    owner,
     numDonations,
+    location,
+    images,
+    goal,
     donations,
-  } = causes.find((cause) => (causeId as string) == String(cause.id));
+    donation,
+    description,
+    categories,
+    updates,
+    createdAt,
+  } = fetchedCause;
+
+  let tags = categories;
+
+  if (!Array.isArray(categories)) tags = Object.keys(categories);
 
   function getFormattedDate(timestamp: number) {
     const date = new Date(timestamp);
@@ -72,6 +107,12 @@ function Cause() {
 
   const descriptions = description.split("\n");
 
+  function getDateXDaysAgo(timestamp) {
+    const daysAgo = new Date(timestamp);
+    const days = new Date().getDate() - daysAgo.getDate();
+    return days;
+  }
+
   return (
     <VStack minH="100vh" p="3rem">
       <VStack className={styles.titleContainer}>
@@ -84,18 +125,20 @@ function Cause() {
           src={images[0]}
           className={styles.imageOne}
         ></Image>
-        <VStack gap={2}>
-          <Image
-            alt="image 2"
-            src={images[1]}
-            className={styles.imageTwo}
-          ></Image>
-          <Image
-            alt="image 3"
-            src={images[2]}
-            className={styles.imageThree}
-          ></Image>
-        </VStack>
+        {images.length === 3 && (
+          <VStack gap={2}>
+            <Image
+              alt="image 2"
+              src={images[1]}
+              className={styles.imageTwo}
+            ></Image>
+            <Image
+              alt="image 3"
+              src={images[2]}
+              className={styles.imageThree}
+            ></Image>
+          </VStack>
+        )}
       </HStack>
       <HStack className={styles.descriptionContainer}>
         <VStack>
@@ -108,13 +151,14 @@ function Cause() {
           </HStack>
           <HStack className={styles.profileContainer}>
             <Image
-              alt={`profile ${profile.name}`}
-              src={profile.image}
+              alt={`profile ${owner ?? abridgeAddress(recipient)}`}
+              src={owner ? owner.image : "/newuser.png"}
               className={styles.profileImage}
             ></Image>
             <VStack alignItems="flex-start" pl=".5rem">
               <Text className={styles.profileTitle}>
-                Initiative listed by {profile.name}
+                Initiative listed by{" "}
+                {owner ? owner.name : abridgeAddress(recipient)}
               </Text>
               <HStack>
                 <Image
@@ -123,7 +167,7 @@ function Cause() {
                   className={styles.clockIcon}
                 ></Image>
                 <Text className={styles.profileSubtitle}>
-                  Created 1 month ago
+                  Created {getDateXDaysAgo(createdAt)} days ago
                 </Text>
               </HStack>
             </VStack>
@@ -144,23 +188,24 @@ function Cause() {
               </TabPanel>
               <TabPanel>
                 <VStack>
-                  {updates.map((update, idx) => (
-                    <HStack key={idx} className={styles.updateContainer}>
-                      <VStack className={styles.updateDate}>
-                        <Text className={styles.updateDateText}>
-                          {getFormattedDate(update.timestamp)}
-                        </Text>
-                      </VStack>
-                      <VStack className={styles.updateTextContainer}>
-                        <Text className={styles.updateTitle}>
-                          {update.title}
-                        </Text>
-                        <Text className={styles.updateSubtitle}>
-                          {update.description}
-                        </Text>
-                      </VStack>
-                    </HStack>
-                  ))}
+                  {updates &&
+                    updates.map((update, idx) => (
+                      <HStack key={idx} className={styles.updateContainer}>
+                        <VStack className={styles.updateDate}>
+                          <Text className={styles.updateDateText}>
+                            {getFormattedDate(update.timestamp)}
+                          </Text>
+                        </VStack>
+                        <VStack className={styles.updateTextContainer}>
+                          <Text className={styles.updateTitle}>
+                            {update.title}
+                          </Text>
+                          <Text className={styles.updateSubtitle}>
+                            {update.description}
+                          </Text>
+                        </VStack>
+                      </HStack>
+                    ))}
                 </VStack>
               </TabPanel>
               <TabPanel>
@@ -168,7 +213,7 @@ function Cause() {
                   <HStack gap={2}>
                     <VStack className={styles.donationHeader}>
                       <Text className={styles.donationHeaderTitle}>
-                        {numberWithCommas(donation)} KLAY
+                        {donation} KLAY
                       </Text>
                       <Text className={styles.donationHeaderSubtitle}>
                         Total donation amount
@@ -176,7 +221,7 @@ function Cause() {
                     </VStack>
                     <VStack className={styles.donationHeader}>
                       <Text className={styles.donationHeaderTitle}>
-                        {numberWithCommas(numDonations)}
+                        {numDonations}
                       </Text>
                       <Text className={styles.donationHeaderSubtitle}>
                         Donations
@@ -193,26 +238,28 @@ function Cause() {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {donations.map(
-                          ({ image, donor, amount, timestamp }) => (
-                            <Tr key={donor}>
-                              <Td>
-                                <HStack>
-                                  <Image
-                                    alt="profile"
-                                    src={image}
-                                    className={styles.donorImage}
-                                  ></Image>
-                                  <Text>@{donor}</Text>
-                                </HStack>
-                              </Td>
-                              <Td>{numberWithCommas(amount)} KLAY</Td>
-                              <Td isNumeric>
-                                {getFormattedDateNum(timestamp)}
-                              </Td>
-                            </Tr>
-                          )
-                        )}
+                        {donations &&
+                          donations.length > 0 &&
+                          donations.map(
+                            ({ image, donor, amount, timestamp }) => (
+                              <Tr key={donor}>
+                                <Td>
+                                  <HStack>
+                                    <Image
+                                      alt="profile"
+                                      src={image}
+                                      className={styles.donorImage}
+                                    ></Image>
+                                    <Text>@{donor}</Text>
+                                  </HStack>
+                                </Td>
+                                <Td>{amount} KLAY</Td>
+                                <Td isNumeric>
+                                  {getFormattedDateNum(timestamp)}
+                                </Td>
+                              </Tr>
+                            )
+                          )}
                       </Tbody>
                     </Table>
                   </TableContainer>
@@ -223,18 +270,14 @@ function Cause() {
         </VStack>
         <VStack className={styles.donateContainer}>
           <HStack>
-            <Text className={styles.donationText}>
-              {numberWithCommas(donation)} KLAY
-            </Text>
-            <Text className={styles.goalText}>
-              raised of {numberWithCommas(goal)} goal
-            </Text>
+            <Text className={styles.donationText}>{donation} KLAY</Text>
+            <Text className={styles.goalText}>raised of {goal} goal</Text>
           </HStack>
           <Box className={`${styles.progressBarContainer}`}>
             <Box
               style={{
                 backgroundColor: "black",
-                width: `${(0.5 * 100).toFixed(0)}%`,
+                width: `${((donation / goal) * 100).toFixed(0)}%`,
               }}
               className={`${styles.progressBar}`}
             ></Box>
@@ -258,7 +301,14 @@ function Cause() {
               Donate now
             </Button>
           )}
-          <Button className={styles.shareBtn}>Share cause</Button>
+
+          <ChakraLink
+            w="100%"
+            href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.klaygoods.org%2Fcause%2F0&text=Donate%20to%20this%20cause%20on%20KlayGoods%21"
+            isExternal
+          >
+            <Button className={styles.shareBtn}>Share cause</Button>
+          </ChakraLink>
         </VStack>
       </HStack>
       <ToastContainer />

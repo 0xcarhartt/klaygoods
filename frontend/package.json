@@ -15,13 +15,15 @@
     "@emotion/styled": "^11.10.4",
     "caver-js": "^1.9.0",
     "connectkit": "^0.0.2",
-    "ethers": "^5.7.1",
+    "ethers": "^5.7.2",
+    "firebase": "^9.12.1",
     "framer-motion": "^6.5.1",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-toastify": "^9.0.8",
-    "wagmi": "^0.6.8"
+    "wagmi": "^0.6.8",
+    "web3.storage": "^4.4.0"
   },
   "devDependencies": {
     "@types/node": "18.8.5",

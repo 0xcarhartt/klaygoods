@@ -2,77 +2,126 @@ import { ChevronDownIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   VStack,
   Text,
-  Progress,
   HStack,
   Image,
   Input,
   Checkbox,
   Button,
-  Box,
   Divider,
   Highlight,
   Textarea,
   SimpleGrid,
   Spinner,
 } from "@chakra-ui/react";
-import { categories } from "@data/categories";
+import { categoryOptions } from "@data/categories";
 import { countries } from "@data/countries";
-import { myTags, tags } from "@data/tags";
 import styles from "@styles/List.module.css";
 import { numberWithCommas } from "@utils/utils";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { ScaleFade } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
+import ProgressBar from "@components/ProgressBar";
+import Success from "@components/Success";
+import { doc, setDoc } from "firebase/firestore";
+import db from "@firebase/firebase";
+import { Web3Storage } from "web3.storage";
+import { abridgeAddress } from "@components/Navbar";
+
+const WEB3_STORAGE_TOKEN = process.env.NEXT_PUBLIC_WEB3_STORAGE_API_KEY;
+
+const client = new Web3Storage({
+  token: WEB3_STORAGE_TOKEN,
+  endpoint: new URL("https://api.web3.storage"),
+});
 
 function List() {
   const [address, setAddress] = useState<string>("");
   const [amount, setAmount] = useState<number>();
-  const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(false);
+  const [title, setTitle] = useState("");
+  const [goal, setGoal] = useState<number>(0);
+  const [description, setDescription] = useState();
+  const [files, setFiles] = useState<Blob[]>([]);
+  const [CIDs, setCIDs] = useState<string[]>([]);
+
+  const [selectedCategories, setSelectedCategories] = useState<any>({});
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+
+  const [isTxnSuccessful, setTxnSuccessful] = useState<string>("");
 
   const [currentStep, setCurrentStep] = useState(0);
-
-  const router = useRouter();
 
   function handleAddressChange(e: any) {
     setAddress(e.target.value);
   }
 
-  function handleAmountChange(e: any) {
-    setAmount(e.target.value);
+  function handleGoalChange(e: any) {
+    setGoal(e.target.value);
   }
+
+  function handleTitleChange(e) {
+    setTitle(e.target.value);
+  }
+
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value);
+  }
+
+  function handleFileUpload(e) {
+    setFiles((prev) => [...prev, e.target.files[0]]);
+  }
+
+  async function uploadFiles() {
+    if (files.length === 0) return;
+
+    for (let i = 0; i < files.length; i++) {
+      const blob = new Blob([files[i]], { type: "image/png" });
+      const imageToUpload = [new File([blob], "file.png")];
+      const imageCID = await client.put(imageToUpload);
+      const imageLink = `https://${imageCID}.ipfs.w3s.link/file.png`;
+      setCIDs((prev) => [...prev, imageLink]);
+    }
+
+    return true;
+  }
+
+  const saveCause = useCallback(
+    async (id: string) => {
+      console.log("cids: ", CIDs);
+      const docRef = doc(db, "causes", id);
+      await setDoc(docRef, {
+        id: id,
+        recipient: address,
+        owner: { name: abridgeAddress(address), image: "/newuser.png" },
+        goal: goal,
+        title: title,
+        description: description,
+        categories: selectedCategories,
+        county: selectedCountry,
+        createdAt: new Date(),
+        images: CIDs,
+        updates: [],
+        donation: 0,
+        numDonations: 0,
+        donations: [],
+      });
+    },
+    [
+      CIDs,
+      address,
+      description,
+      goal,
+      selectedCategories,
+      selectedCountry,
+      title,
+    ]
+  );
 
   if (isTxnSuccessful)
     return (
-      <VStack minH="100vh" pt="2rem" className={styles.successContainer}>
-        <Text className={styles.title}>Congrats, your cause is listed!</Text>
-        <ScaleFade initialScale={0.5} in={isTxnSuccessful}>
-          <Image
-            alt="success image"
-            src="/success.png"
-            className={styles.successImage}
-          />
-        </ScaleFade>
-        <Text className={styles.successText}>
-          <Text as="span" className={styles.successTextHeavy}>
-            Saving polar bears in Antarctica
-          </Text>{" "}
-          has been successfully listed on Klaygoods. You can edit the cause
-          anytime.
-        </Text>
-        <VStack className={styles.buttonContainer}>
-          <Link href="/cause/7">
-            <Button className={styles.viewCauseBtn}>View cause</Button>
-          </Link>
-          <Link href="/profile">
-            <Button className={styles.viewTxnBtn}>Edit cause</Button>
-          </Link>
-        </VStack>
-      </VStack>
+      <Success
+        id={isTxnSuccessful}
+        inTrigger={!!isTxnSuccessful}
+        title={title}
+      />
     );
-
-  if (currentStep === 4)
-    return <ReviewCause setTxnSuccessful={setTxnSuccessful} />;
 
   function getComponent() {
     switch (currentStep) {
@@ -80,9 +129,9 @@ function List() {
         return (
           <StepOne
             handleAddressChange={handleAddressChange}
-            handleAmountChange={handleAmountChange}
+            handleGoalChange={handleGoalChange}
             address={address}
-            amount={amount}
+            goal={goal}
             setCurrentStep={setCurrentStep}
           />
         );
@@ -90,42 +139,54 @@ function List() {
       case 1:
         return (
           <StepTwo
-            handleAmountChange={handleAmountChange}
+            handleTitleChange={handleTitleChange}
+            setSelectedCategories={setSelectedCategories}
+            setSelectedCountry={setSelectedCountry}
+            selectedCategories={selectedCategories}
+            selectedCountry={selectedCountry}
             amount={amount}
+            title={title}
             setCurrentStep={setCurrentStep}
           />
         );
       case 2:
-        return <StepThree setCurrentStep={setCurrentStep} />;
+        return (
+          <StepThree
+            setCurrentStep={setCurrentStep}
+            description={description}
+            handleDescriptionChange={handleDescriptionChange}
+          />
+        );
       case 3:
-        return <StepFour setCurrentStep={setCurrentStep} />;
+        return (
+          <StepFour
+            setCurrentStep={setCurrentStep}
+            files={files}
+            handleFileUpload={handleFileUpload}
+            uploadFiles={uploadFiles}
+          />
+        );
+      case 4:
+        return (
+          <ReviewCause
+            setTxnSuccessful={setTxnSuccessful}
+            categories={Object.keys(selectedCategories)}
+            country={selectedCountry}
+            address={address}
+            title={title}
+            goal={goal}
+            description={description}
+            files={files}
+            saveCause={saveCause}
+          />
+        );
     }
   }
 
   return (
     <VStack minH="100vh" p="2rem 4rem">
       <Text className={styles.title}>List a new cause</Text>
-
-      <VStack className={styles.progressContainer}>
-        <Box className={`${styles.progressBarContainer}`}>
-          <Box
-            style={{
-              backgroundColor: "black",
-              width: `${(((currentStep + 1) / 4) * 100).toFixed(0)}%`,
-            }}
-            className={`${styles.progressBar}`}
-          ></Box>
-          <HStack className={styles.progressBarDividers}>
-            <Box pl="6px">
-              <Box className={styles.progressBarDivider}></Box>
-            </Box>
-            <Box className={styles.progressBarDivider}></Box>
-            <Box pr="7px">
-              <Box className={styles.progressBarDivider}></Box>
-            </Box>
-          </HStack>
-        </Box>
-      </VStack>
+      <ProgressBar currentStep={currentStep} totalSteps={4} />
       {getComponent()}
     </VStack>
   );
@@ -133,16 +194,16 @@ function List() {
 
 type StepOneProps = {
   handleAddressChange: (e: any) => void;
-  handleAmountChange: (e: any) => void;
-  amount: number;
+  handleGoalChange: (e: any) => void;
+  goal: number;
   address: string;
   setCurrentStep: (step: any) => void;
 };
 
 function StepOne({
   handleAddressChange,
-  handleAmountChange,
-  amount,
+  handleGoalChange,
+  goal,
   address,
   setCurrentStep,
 }: StepOneProps) {
@@ -177,7 +238,7 @@ function StepOne({
           </Text>
           <Input
             type="number"
-            onChange={handleAmountChange}
+            onChange={handleGoalChange}
             className={styles.input}
           ></Input>
           <Text className={styles.inputUnit}>KLAY</Text>
@@ -191,7 +252,7 @@ function StepOne({
         </VStack>
       </VStack>
       <Button
-        disabled={!amount || !address}
+        disabled={!goal || !address}
         className={styles.donateBtn}
         onClick={() => setCurrentStep((prev) => prev + 1)}
       >
@@ -202,17 +263,27 @@ function StepOne({
 }
 
 type StepTwoProps = {
-  handleAmountChange: (e: any) => void;
+  handleTitleChange: (e: any) => void;
   amount: number;
+  title: string;
   setCurrentStep: (step: any) => void;
+  setSelectedCategories: (e: any) => void;
+  setSelectedCountry: (s: string) => void;
+  selectedCategories: any;
+  selectedCountry: any;
 };
 
-function StepTwo({ handleAmountChange, amount, setCurrentStep }: StepTwoProps) {
+function StepTwo({
+  handleTitleChange,
+  title,
+  setCurrentStep,
+  setSelectedCategories,
+  setSelectedCountry,
+  selectedCategories,
+  selectedCountry,
+}: StepTwoProps) {
   const [isCategoriesVisible, setCategoriesVisible] = useState<boolean>();
   const [isCountriesVisible, setCountriesVisible] = useState<boolean>();
-  const [selectedCategories, setSelectedCategories] = useState({});
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [title, setTitle] = useState("");
 
   function handleSelectCategories(category: string) {
     const copiedCategories = { ...selectedCategories };
@@ -227,10 +298,6 @@ function StepTwo({ handleAmountChange, amount, setCurrentStep }: StepTwoProps) {
   function handleCountryChange(country) {
     setSelectedCountry(country);
     setCountriesVisible(false);
-  }
-
-  function handleTitleChange(e) {
-    setTitle(e.target.value);
   }
 
   const isValidForm = title && Object.keys(selectedCategories).length > 0;
@@ -273,7 +340,7 @@ function StepTwo({ handleAmountChange, amount, setCurrentStep }: StepTwoProps) {
           </HStack>
           {isCategoriesVisible && (
             <VStack className={styles.selectionContainer}>
-              {categories.map((category, idx) => (
+              {categoryOptions.map((category, idx) => (
                 <VStack key={idx}>
                   <HStack className={styles.selectionBox}>
                     <Checkbox
@@ -333,22 +400,22 @@ function StepTwo({ handleAmountChange, amount, setCurrentStep }: StepTwoProps) {
 
 type StepThreeProps = {
   setCurrentStep: (step: any) => void;
+  handleDescriptionChange: (e: any) => void;
+  description: string;
 };
 
-function StepThree({ setCurrentStep }: StepThreeProps) {
-  const [text, setText] = useState();
-
-  function handleTextChange(e) {
-    setText(e.target.value);
-  }
-
+function StepThree({
+  setCurrentStep,
+  handleDescriptionChange,
+  description,
+}: StepThreeProps) {
   return (
     <VStack>
       <VStack pb="2rem">
         <VStack className={styles.inputContainer}>
           <Text className={styles.inputHeader}>Description</Text>
           <Textarea
-            onChange={handleTextChange}
+            onChange={handleDescriptionChange}
             className={styles.textarea}
           ></Textarea>
           <Text className={styles.inputDescription}>
@@ -359,7 +426,7 @@ function StepThree({ setCurrentStep }: StepThreeProps) {
       </VStack>
       <Button
         className={styles.donateBtn}
-        disabled={!text}
+        disabled={!description}
         onClick={() => setCurrentStep((prev) => prev + 1)}
       >
         Next
@@ -370,13 +437,20 @@ function StepThree({ setCurrentStep }: StepThreeProps) {
 
 type StepFourProps = {
   setCurrentStep: (step: any) => void;
+  files: Blob[];
+  handleFileUpload: (e: any) => void;
+  uploadFiles: () => void;
 };
 
-function StepFour({ setCurrentStep }: StepFourProps) {
-  const [files, setFiles] = useState<string[]>([]);
-
-  function handleFileUpload(e) {
-    setFiles((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
+function StepFour({
+  setCurrentStep,
+  files,
+  handleFileUpload,
+  uploadFiles,
+}: StepFourProps) {
+  function handleStepFourNext() {
+    uploadFiles();
+    setCurrentStep((prev) => prev + 1);
   }
 
   return (
@@ -407,14 +481,14 @@ function StepFour({ setCurrentStep }: StepFourProps) {
             Select up to 3 images to showcase your cause.
           </Text>
           <SimpleGrid columns={3} gap={3}>
-            {files.map((file) => (
-              <VStack key={file} className={styles.previewImageContainer}>
+            {files.map((file, idx) => (
+              <VStack key={idx} className={styles.previewImageContainer}>
                 <VStack className={styles.closeBtn}>
                   <CloseIcon w={3} h={3} />
                 </VStack>
                 <Image
                   alt="uploaded file"
-                  src={file ?? ""}
+                  src={URL.createObjectURL(file) ?? ""}
                   className={styles.previewImage}
                 />
               </VStack>
@@ -425,7 +499,7 @@ function StepFour({ setCurrentStep }: StepFourProps) {
       <Button
         disabled={false}
         className={styles.donateBtn}
-        onClick={() => setCurrentStep((prev) => prev + 1)}
+        onClick={handleStepFourNext}
       >
         Next
       </Button>
@@ -434,10 +508,28 @@ function StepFour({ setCurrentStep }: StepFourProps) {
 }
 
 type ReviewCauseProps = {
-  setTxnSuccessful: (bool: boolean) => void;
+  setTxnSuccessful: (id: string) => void;
+  address: string;
+  title: string;
+  country: string;
+  goal: any;
+  categories: string[];
+  description: string;
+  files: Blob[];
+  saveCause: (id: string) => void;
 };
 
-function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
+function ReviewCause({
+  setTxnSuccessful,
+  address,
+  title,
+  goal,
+  categories,
+  description,
+  country,
+  files,
+  saveCause,
+}: ReviewCauseProps) {
   const [isLoading, setIsLoading] = useState(false);
   const scrollToTop = () => {
     window.scrollTo({
@@ -446,10 +538,15 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
   };
 
   function handleListCause() {
+    const id = (
+      Math.floor(Math.random() * (100000000 - 10000000 + 1)) + 10000000
+    ).toString();
+
     setIsLoading(true);
+    saveCause(id);
     setTimeout(() => {
       scrollToTop();
-      setTxnSuccessful(true);
+      setTxnSuccessful(id);
       setIsLoading(false);
     }, 3000);
   }
@@ -493,7 +590,7 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         </VStack>
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Fundraising goal</Text>
-          <Text fontWeight={500}>{numberWithCommas(25000)} KLAY</Text>
+          <Text fontWeight={500}>{numberWithCommas(goal)} KLAY</Text>
           <Divider />
         </VStack>
 
@@ -504,16 +601,16 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Campaign title</Text>
           <HStack>
-            <Text fontWeight={500}>Saving the polar bears in Antarctica</Text>
+            <Text fontWeight={500}>{title}</Text>
           </HStack>
           <Divider />
         </VStack>
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Choose categories</Text>
           <HStack className={styles.tagContainer}>
-            {myTags.map((tag, idx) => (
+            {categories.map((category, idx) => (
               <Text key={idx} className={styles.causeTag}>
-                {tag.name}
+                {category}
               </Text>
             ))}
           </HStack>
@@ -521,7 +618,7 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         </VStack>
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Location</Text>
-          <Text fontWeight={500}>Brazil</Text>
+          <Text fontWeight={500}>{country}</Text>
           <Divider />
         </VStack>
 
@@ -532,19 +629,7 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>About</Text>
           <VStack>
-            <Text fontWeight={500} w="600px" pb={"1rem"}>
-              In a world where our actions have led to the melting of the polar
-              ice caps, its more important than ever to do our part to save the
-              polar bears. They are one of the most iconic and beloved animals
-              on the planet, and they deserve our help.
-            </Text>
-            <Text fontWeight={500} w="600px">
-              This fundraising event will help support the efforts to save polar
-              bears in Antarctica. All of the proceeds will go towards
-              organizations that are working tirelessly to preserve these
-              beautiful creatures. We hope that youll join us in supporting this
-              cause.
-            </Text>
+            <Text>{description}</Text>
           </VStack>
           <Divider />
         </VStack>
@@ -556,14 +641,14 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>3 images uploaded</Text>
           <SimpleGrid columns={3} gap={3}>
-            {["/polar1.png", "/polar2.jpg", "/polar3.jpg"].map((file) => (
-              <VStack key={file} className={styles.previewImageContainer}>
+            {files.map((file, idx) => (
+              <VStack key={idx} className={styles.previewImageContainer}>
                 <VStack className={styles.closeBtn}>
                   <CloseIcon w={3} h={3} />
                 </VStack>
                 <Image
                   alt="uploaded file"
-                  src={file ?? ""}
+                  src={URL.createObjectURL(file) ?? ""}
                   className={styles.previewImage}
                 />
               </VStack>

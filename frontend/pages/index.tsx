@@ -1,7 +1,5 @@
 import { HStack, VStack, Text, Button, Image, Box } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import Head from "next/head";
-import Navbar from "@components/Navbar";
 import styles from "@styles/Home.module.css";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Link from "next/link";
@@ -79,9 +77,11 @@ function FeaturedContainer() {
         <HStack w="100%">
           <HStack>
             <Text className={styles.featuredTitle}>Featured causes</Text>
-            <VStack className={styles.featuredBtn}>
-              <ArrowForwardIcon w={6} h={6} />
-            </VStack>
+            <Link href="/browse">
+              <VStack className={styles.featuredBtn} cursor="pointer">
+                <ArrowForwardIcon w={6} h={6} />
+              </VStack>
+            </Link>
           </HStack>
         </HStack>
 
@@ -125,7 +125,9 @@ function FeaturedContainer() {
               </Text>
             </HStack>
 
-            <Button className={styles.donateBtn}>Donate now</Button>
+            <Link href="/cause/0">
+              <Button className={styles.donateBtn}>Donate now</Button>
+            </Link>
           </VStack>
         </HStack>
 
@@ -169,7 +171,9 @@ function FeaturedContainer() {
               </Text>
             </HStack>
 
-            <Button className={styles.donateBtn}>Donate now</Button>
+            <Link href="/cause/1">
+              <Button className={styles.donateBtn}>Donate now</Button>
+            </Link>
           </VStack>
         </HStack>
       </VStack>

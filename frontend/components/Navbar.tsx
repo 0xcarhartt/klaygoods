@@ -37,9 +37,15 @@ const Navbar = () => {
         <ChakraLink href="https://snapshot.org/#/0xcarhartt.eth" isExternal>
           <Text>Governance</Text>
         </ChakraLink>
-        <ChakraLink href="https://klaygoods.discourse.group/" isExternal>
+        <ChakraLink
+          href="https://klaygoods.discourse.group/invites/wHp4UAeZXp"
+          isExternal
+        >
           <Text>Forum</Text>
         </ChakraLink>
+        <Link href="/profile">
+          <Text cursor="pointer">My Profile</Text>
+        </Link>
         <Link href="/list">
           <Text cursor="pointer">List Cause</Text>
         </Link>

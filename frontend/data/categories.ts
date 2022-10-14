@@ -1,4 +1,4 @@
-export const categories = [
+export const categoryOptions = [
   "Climate change",
   "Pollution",
   "Carbon footprint",

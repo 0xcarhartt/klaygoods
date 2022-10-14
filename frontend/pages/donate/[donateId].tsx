@@ -17,16 +17,17 @@ import { useState } from "react";
 import { useKlaytn } from "@components/KlaytnProvider";
 import { numberWithCommas } from "@utils/utils";
 import { ScaleFade } from "@chakra-ui/react";
+import { ethers } from "ethers";
 
 function Donate() {
   const router = useRouter();
   const { donateId } = router.query;
   const [amount, setAmount] = useState<number>();
-  const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(false);
+  const [txnHash, setTxnHash] = useState<boolean>(false);
   const { provider, address } = useKlaytn();
 
   function handleAmountChange(e: any) {
-    setAmount(e.target.value);
+    setAmount(Number(e.target.value));
   }
 
   if (!donateId) return;
@@ -39,33 +40,30 @@ function Donate() {
       gas: "0x5208",
       to: "0x224fc9662D0FE47cFC5bA947CDa724C6f317b66c",
       from: address,
-      value: "0x8AC7230489E80000",
+      value: ethers.utils.parseEther(amount.toFixed(2)).toHexString(),
     };
 
-    provider.sendAsync(
-      {
-        method: "klay_sendTransaction",
-        params: [transactionParameters],
-        from: address,
-      },
-      () => setTxnSuccessful(true)
-    );
-    // const tx = {
-    //   from: "0x13a9f77304cE84bb4EecA9E7d56AeE644bdd71bd",
-    //   to: address,
-    //   value: 1,
-    //   gas: 25000,
-    //   memo: "memo",
-    //   submit: true,
-    // };
-    // const result = await caver.kas.wallet.requestValueTransfer(tx);
+    try {
+      const result = await provider.sendAsync(
+        {
+          method: "klay_sendTransaction",
+          params: [transactionParameters],
+          from: address,
+        },
+        (err, { id, jsonrpc, result }) => {
+          if (result) setTxnHash(result);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  if (isTxnSuccessful) {
+  if (!!txnHash) {
     return (
       <VStack minH="100vh" pt="2rem" className={styles.successContainer}>
         <Text className={styles.title}>Thank you!</Text>
-        <ScaleFade initialScale={0.5} in={isTxnSuccessful}>
+        <ScaleFade initialScale={0.5} in={!!txnHash}>
           <Image
             alt="success image"
             src="/success.png"
@@ -75,7 +73,7 @@ function Donate() {
         <Text className={styles.successText}>
           Your donation of{" "}
           <Text as="span" className={styles.successTextHeavy}>
-            10 KLAY
+            {amount} KLAY
           </Text>{" "}
           has been successfully processed. Feel free to check out the receipt on
           KlaytnFinder.
@@ -85,7 +83,7 @@ function Donate() {
             <Button className={styles.viewCauseBtn}>View my causes</Button>
           </Link>
           <ChakraLink
-            href="https://baobab.klaytnfinder.io/account/0xa7253bdb6eafe066527053bea517726ca6b8eeea"
+            href={`https://baobab.klaytnfinder.io/tx/${txnHash}`}
             target="_blank"
             isExternal
           >

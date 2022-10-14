@@ -275,6 +275,7 @@ export const causes = [
     image: "/causes/1.png",
     title: "Support WeatherDAO on decreasing carbon emissions",
     last: 11,
+    recipient: "0xa7253bDb6EafE066527053BEa517726cA6b8EeEa",
     donation: 145928,
     goal: 300000,
     profile: {

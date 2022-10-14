@@ -7,16 +7,18 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
-import { causes, myCauses, supportedCauses } from "@data/causes";
+import { useKlaytn } from "@components/KlaytnProvider";
+import { abridgeAddress } from "@components/Navbar";
+import { myCauses, supportedCauses } from "@data/causes";
 import { tags } from "@data/tags";
 import styles from "@styles/Profile.module.css";
 import { numberWithCommas } from "@utils/utils";
-import Head from "next/head";
 import Link from "next/link";
 
 function Profile() {
   const donation = 1492.38;
   const numDonations = 129;
+  const { provider, address } = useKlaytn();
 
   return (
     <VStack minH="100vh" p="2rem 4rem">
@@ -24,8 +26,10 @@ function Profile() {
         <HStack className={styles.profileBioSection}>
           <VStack className={styles.profileContainer}>
             <Image alt="profile" src="/mochi.png"></Image>
-            <Text className={styles.profileUsername}>@mochi321</Text>
-            <Text className={styles.profileLocation}>New York, NY</Text>
+            <Text className={styles.profileUsername}>
+              {abridgeAddress(address)}
+            </Text>
+            {/* <Text className={styles.profileLocation}>New York, NY</Text> */}
             <Divider />
             <VStack className={styles.subtitleContainer}>
               <HStack>
@@ -42,14 +46,12 @@ function Profile() {
           </VStack>
           <VStack className={styles.bioContainer}>
             <HStack className={styles.titleContainer}>
-              <Text className={styles.bioTitle}>Hi! I am mochi321</Text>
-              <Button className={styles.editBtn}>Edit Profile</Button>
+              <Text className={styles.bioTitle}>
+                User {abridgeAddress(address)}
+              </Text>
             </HStack>
             <Text className={styles.bioHeader}>About</Text>
-            <Text className={styles.bioText}>
-              I am a community leader working in web3. I love raising awareness
-              on climate change and learning more about the Klaytn ecosystem.
-            </Text>
+            <Text className={styles.bioText}></Text>
             <Text className={styles.bioHeader}>
               Areas I am passionate about:
             </Text>
@@ -62,18 +64,14 @@ function Profile() {
             </HStack>
             <HStack w="100%" gap={2}>
               <VStack className={styles.donationHeader}>
-                <Text className={styles.donationHeaderTitle}>
-                  {numberWithCommas(donation)} KLAY
-                </Text>
+                <Text className={styles.donationHeaderTitle}>0 KLAY</Text>
                 <Text className={styles.donationHeaderSubtitle}>
                   Total donation amount
                 </Text>
               </VStack>
 
               <VStack className={styles.donationHeader}>
-                <Text className={styles.donationHeaderTitle}>
-                  {numDonations}
-                </Text>
+                <Text className={styles.donationHeaderTitle}>0</Text>
                 <Text className={styles.donationHeaderSubtitle}>Donations</Text>
               </VStack>
             </HStack>
@@ -87,7 +85,7 @@ function Profile() {
                 {"Causes I've listed"}
               </Text>
               <VStack className={styles.sectionCount}>
-                <Text className={styles.sectionCountText}>1</Text>
+                <Text className={styles.sectionCountText}>0</Text>
               </VStack>
             </HStack>
             <Link href={`/list`}>
@@ -95,7 +93,7 @@ function Profile() {
             </Link>
           </HStack>
           <HStack className={styles.causeCarousel}>
-            {myCauses.map(
+            {/* {myCauses.map(
               ({ image, title, last, donation, goal, profile, id }) => (
                 <Link href={`/cause/${id}`} key={id}>
                   <VStack className={styles.causeContainer} cursor="pointer">
@@ -136,7 +134,7 @@ function Profile() {
                   </VStack>
                 </Link>
               )
-            )}
+            )} */}
           </HStack>
         </VStack>
 
@@ -147,13 +145,13 @@ function Profile() {
                 {"Causes I've supported"}
               </Text>
               <VStack className={styles.sectionCount}>
-                <Text className={styles.sectionCountText}>10</Text>
+                <Text className={styles.sectionCountText}>0</Text>
               </VStack>
             </HStack>
           </HStack>
 
           <HStack className={styles.causeCarousel}>
-            {supportedCauses.map(
+            {/* {supportedCauses.map(
               ({ image, title, last, donation, goal, profile, id }) => (
                 <Link href={`/cause/${id}`} key={id}>
                   <VStack className={styles.causeContainer} cursor="pointer">
@@ -204,7 +202,7 @@ function Profile() {
                   </VStack>
                 </Link>
               )
-            )}
+            )} */}
           </HStack>
         </VStack>
       </VStack>
