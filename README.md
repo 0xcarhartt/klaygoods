@@ -10,6 +10,7 @@ A Klatyn-native decentralized giving platform to help public good projects fundr
 - Check out the [Walkthrough Demo](https://vimeo.com/759768734)
 - Discourse Forum: https://klaygoods.discourse.group/
 - Snapshot DAO Governance: https://snapshot.org/#/0xcarhartt.eth
+- Quadratic Funding Mechanism ([`/funding-mechanism`](funding-mechanism))
 
 ### Motivation
 
