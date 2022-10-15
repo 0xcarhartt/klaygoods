@@ -13,22 +13,30 @@ import {
   Highlight,
   Textarea,
   SimpleGrid,
+  Spinner,
 } from "@chakra-ui/react";
 import { categories } from "@data/categories";
 import { countries } from "@data/countries";
-import { tags } from "@data/tags";
+import { myTags, tags } from "@data/tags";
 import styles from "@styles/List.module.css";
+import { numberWithCommas } from "@utils/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { ScaleFade } from "@chakra-ui/react";
 
 function List() {
+  const [address, setAddress] = useState<string>("");
   const [amount, setAmount] = useState<number>();
   const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(false);
 
   const [currentStep, setCurrentStep] = useState(0);
 
   const router = useRouter();
+
+  function handleAddressChange(e: any) {
+    setAddress(e.target.value);
+  }
 
   function handleAmountChange(e: any) {
     setAmount(e.target.value);
@@ -38,20 +46,22 @@ function List() {
     return (
       <VStack minH="100vh" pt="2rem" className={styles.successContainer}>
         <Text className={styles.title}>Congrats, your cause is listed!</Text>
-        <Image
-          alt="success image"
-          src="/success.png"
-          className={styles.successImage}
-        />
+        <ScaleFade initialScale={0.5} in={isTxnSuccessful}>
+          <Image
+            alt="success image"
+            src="/success.png"
+            className={styles.successImage}
+          />
+        </ScaleFade>
         <Text className={styles.successText}>
           <Text as="span" className={styles.successTextHeavy}>
-            Saving polar bears in Antartica
+            Saving polar bears in Antarctica
           </Text>{" "}
           has been successfully listed on Klaygoods. You can edit the cause
           anytime.
         </Text>
         <VStack className={styles.buttonContainer}>
-          <Link href="/profile">
+          <Link href="/cause/7">
             <Button className={styles.viewCauseBtn}>View cause</Button>
           </Link>
           <Link href="/profile">
@@ -69,7 +79,9 @@ function List() {
       case 0:
         return (
           <StepOne
+            handleAddressChange={handleAddressChange}
             handleAmountChange={handleAmountChange}
+            address={address}
             amount={amount}
             setCurrentStep={setCurrentStep}
           />
@@ -120,12 +132,20 @@ function List() {
 }
 
 type StepOneProps = {
+  handleAddressChange: (e: any) => void;
   handleAmountChange: (e: any) => void;
   amount: number;
+  address: string;
   setCurrentStep: (step: any) => void;
 };
 
-function StepOne({ handleAmountChange, amount, setCurrentStep }: StepOneProps) {
+function StepOne({
+  handleAddressChange,
+  handleAmountChange,
+  amount,
+  address,
+  setCurrentStep,
+}: StepOneProps) {
   return (
     <VStack>
       <VStack pb="2rem">
@@ -162,9 +182,16 @@ function StepOne({ handleAmountChange, amount, setCurrentStep }: StepOneProps) {
           ></Input>
           <Text className={styles.inputUnit}>KLAY</Text>
         </VStack>
+        <VStack className={styles.inputContainer}>
+          <Text className={styles.inputHeader}>Recipient Address</Text>
+          <Input
+            onChange={handleAddressChange}
+            className={styles.input}
+          ></Input>
+        </VStack>
       </VStack>
       <Button
-        disabled={!amount}
+        disabled={!amount || !address}
         className={styles.donateBtn}
         onClick={() => setCurrentStep((prev) => prev + 1)}
       >
@@ -309,12 +336,21 @@ type StepThreeProps = {
 };
 
 function StepThree({ setCurrentStep }: StepThreeProps) {
+  const [text, setText] = useState();
+
+  function handleTextChange(e) {
+    setText(e.target.value);
+  }
+
   return (
     <VStack>
       <VStack pb="2rem">
         <VStack className={styles.inputContainer}>
           <Text className={styles.inputHeader}>Description</Text>
-          <Textarea onChange={() => {}} className={styles.textarea}></Textarea>
+          <Textarea
+            onChange={handleTextChange}
+            className={styles.textarea}
+          ></Textarea>
           <Text className={styles.inputDescription}>
             This text will show up in the “About” section of your cause detail
             page.
@@ -322,8 +358,8 @@ function StepThree({ setCurrentStep }: StepThreeProps) {
         </VStack>
       </VStack>
       <Button
-        disabled={false}
         className={styles.donateBtn}
+        disabled={!text}
         onClick={() => setCurrentStep((prev) => prev + 1)}
       >
         Next
@@ -347,7 +383,7 @@ function StepFour({ setCurrentStep }: StepFourProps) {
     <VStack>
       <VStack pb="2rem">
         <VStack className={styles.inputContainer}>
-          <Text className={styles.inputHeader}>Add images</Text>
+          <Text className={styles.inputHeader}>Add images (optional)</Text>
           <VStack className={styles.fileUploadContainer}>
             <input
               type="file"
@@ -402,11 +438,21 @@ type ReviewCauseProps = {
 };
 
 function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
     });
   };
+
+  function handleListCause() {
+    setIsLoading(true);
+    setTimeout(() => {
+      scrollToTop();
+      setTxnSuccessful(true);
+      setIsLoading(false);
+    }, 3000);
+  }
 
   return (
     <VStack minH="100vh" p="2rem 4rem 3rem 4rem">
@@ -414,8 +460,8 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         <Text className={styles.title}>Review your cause</Text>
         <Text className={styles.reviewSubtitle}>
           You can make changes to your campaign at any time. The platform is
-          free for organizers, but we take 2% fee of the donation for the
-          KlayGoods treasury. Learn more
+          free for organizers, but we take 1% fee of every donation to support
+          the KlayGoods DAO treasury.
         </Text>
         <HStack className={styles.subtitleContainer}>
           <Text className={styles.subtitle}>Your cause</Text>
@@ -447,7 +493,7 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         </VStack>
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Fundraising goal</Text>
-          <Text fontWeight={500}>25000 KLAY</Text>
+          <Text fontWeight={500}>{numberWithCommas(25000)} KLAY</Text>
           <Divider />
         </VStack>
 
@@ -458,14 +504,14 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Campaign title</Text>
           <HStack>
-            <Text fontWeight={500}>Ssaving the polar bears in Antarctica</Text>
+            <Text fontWeight={500}>Saving the polar bears in Antarctica</Text>
           </HStack>
           <Divider />
         </VStack>
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Choose categories</Text>
           <HStack className={styles.tagContainer}>
-            {tags.map((tag, idx) => (
+            {myTags.map((tag, idx) => (
               <Text key={idx} className={styles.causeTag}>
                 {tag.name}
               </Text>
@@ -475,7 +521,7 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         </VStack>
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>Location</Text>
-          <Text fontWeight={500}>United States</Text>
+          <Text fontWeight={500}>Brazil</Text>
           <Divider />
         </VStack>
 
@@ -485,14 +531,21 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         </HStack>
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>About</Text>
-          <HStack>
-            <Text fontWeight={500} w="600px">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+          <VStack>
+            <Text fontWeight={500} w="600px" pb={"1rem"}>
+              In a world where our actions have led to the melting of the polar
+              ice caps, its more important than ever to do our part to save the
+              polar bears. They are one of the most iconic and beloved animals
+              on the planet, and they deserve our help.
             </Text>
-          </HStack>
+            <Text fontWeight={500} w="600px">
+              This fundraising event will help support the efforts to save polar
+              bears in Antarctica. All of the proceeds will go towards
+              organizations that are working tirelessly to preserve these
+              beautiful creatures. We hope that youll join us in supporting this
+              cause.
+            </Text>
+          </VStack>
           <Divider />
         </VStack>
 
@@ -503,18 +556,18 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         <VStack className={styles.reviewContainer}>
           <Text className={styles.inputHeader}>3 images uploaded</Text>
           <SimpleGrid columns={3} gap={3}>
-            {/* {files.map((file) => (
-            <VStack key={file} className={styles.previewImageContainer}>
-              <VStack className={styles.closeBtn}>
-                <CloseIcon w={3} h={3} />
+            {["/polar1.png", "/polar2.jpg", "/polar3.jpg"].map((file) => (
+              <VStack key={file} className={styles.previewImageContainer}>
+                <VStack className={styles.closeBtn}>
+                  <CloseIcon w={3} h={3} />
+                </VStack>
+                <Image
+                  alt="uploaded file"
+                  src={file ?? ""}
+                  className={styles.previewImage}
+                />
               </VStack>
-              <Image
-                alt="uploaded file"
-                src={file ?? ""}
-                className={styles.previewImage}
-              />
-            </VStack>
-          ))} */}
+            ))}
           </SimpleGrid>
           <Divider />
         </VStack>
@@ -522,12 +575,9 @@ function ReviewCause({ setTxnSuccessful }: ReviewCauseProps) {
         <Button
           disabled={false}
           className={styles.donateBtn}
-          onClick={() => {
-            scrollToTop();
-            setTxnSuccessful(true);
-          }}
+          onClick={handleListCause}
         >
-          List cause
+          {isLoading ? <Spinner color="black" /> : "List cause"}
         </Button>
       </VStack>
     </VStack>

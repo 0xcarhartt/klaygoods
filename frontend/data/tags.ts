@@ -1,14 +1,29 @@
+export const myTags = [
+  {
+    name: "Climate change",
+    count: 34,
+  },
+];
+
 export const tags = [
   {
     name: "Disaster relief",
-    count: 134,
+    count: 13,
   },
   {
     name: "Climate change",
-    count: 192,
+    count: 34,
   },
   {
     name: "Economic inequality",
-    count: 92,
+    count: 10,
+  },
+  {
+    name: "Pollution",
+    count: 3,
+  },
+  {
+    name: "War",
+    count: 7,
   },
 ];

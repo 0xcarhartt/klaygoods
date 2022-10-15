@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Input,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { causes } from "@data/causes";
@@ -13,12 +14,16 @@ import styles from "@styles/Donate.module.css";
 import Link from "next/link";
 import { Checkbox } from "@chakra-ui/react";
 import { useState } from "react";
+import { useKlaytn } from "@components/KlaytnProvider";
+import { numberWithCommas } from "@utils/utils";
+import { ScaleFade } from "@chakra-ui/react";
 
 function Donate() {
   const router = useRouter();
   const { donateId } = router.query;
   const [amount, setAmount] = useState<number>();
   const [isTxnSuccessful, setTxnSuccessful] = useState<boolean>(false);
+  const { provider, address } = useKlaytn();
 
   function handleAmountChange(e: any) {
     setAmount(e.target.value);
@@ -29,30 +34,63 @@ function Donate() {
     (cause) => (donateId as string) == String(cause.id)
   );
 
+  async function donateTxn() {
+    const transactionParameters = {
+      gas: "0x5208",
+      to: "0x224fc9662D0FE47cFC5bA947CDa724C6f317b66c",
+      from: address,
+      value: "0x8AC7230489E80000",
+    };
+
+    provider.sendAsync(
+      {
+        method: "klay_sendTransaction",
+        params: [transactionParameters],
+        from: address,
+      },
+      () => setTxnSuccessful(true)
+    );
+    // const tx = {
+    //   from: "0x13a9f77304cE84bb4EecA9E7d56AeE644bdd71bd",
+    //   to: address,
+    //   value: 1,
+    //   gas: 25000,
+    //   memo: "memo",
+    //   submit: true,
+    // };
+    // const result = await caver.kas.wallet.requestValueTransfer(tx);
+  }
+
   if (isTxnSuccessful) {
     return (
       <VStack minH="100vh" pt="2rem" className={styles.successContainer}>
         <Text className={styles.title}>Thank you!</Text>
-        <Image
-          alt="success image"
-          src="/success.png"
-          className={styles.successImage}
-        />
+        <ScaleFade initialScale={0.5} in={isTxnSuccessful}>
+          <Image
+            alt="success image"
+            src="/success.png"
+            className={styles.successImage}
+          />
+        </ScaleFade>
         <Text className={styles.successText}>
           Your donation of{" "}
           <Text as="span" className={styles.successTextHeavy}>
-            2,500 KLAY
+            10 KLAY
           </Text>{" "}
-          has been successfully processed. Feel free to check out the reciept on
-          Etherscan.
+          has been successfully processed. Feel free to check out the receipt on
+          KlaytnFinder.
         </Text>
         <VStack className={styles.buttonContainer}>
           <Link href="/profile">
             <Button className={styles.viewCauseBtn}>View my causes</Button>
           </Link>
-          <Link href="/profile">
+          <ChakraLink
+            href="https://baobab.klaytnfinder.io/account/0xa7253bdb6eafe066527053bea517726ca6b8eeea"
+            target="_blank"
+            isExternal
+          >
             <Button className={styles.viewTxnBtn}>View transaction</Button>
-          </Link>
+          </ChakraLink>
         </VStack>
       </VStack>
     );
@@ -111,7 +149,7 @@ function Donate() {
           <Button
             disabled={!amount}
             className={styles.donateBtn}
-            onClick={() => setTxnSuccessful(true)}
+            onClick={donateTxn}
           >
             Donate now
           </Button>
@@ -148,8 +186,12 @@ function Donate() {
             </VStack>
           </HStack>
           <HStack>
-            <Text className={styles.donationText}>{donation} KLAY</Text>
-            <Text className={styles.goalText}>raised of {goal} goal</Text>
+            <Text className={styles.donationText}>
+              {numberWithCommas(donation)} KLAY
+            </Text>
+            <Text className={styles.goalText}>
+              raised of {numberWithCommas(goal)} goal
+            </Text>
           </HStack>
           <Box className={`${styles.progressBarContainer}`}>
             <Box

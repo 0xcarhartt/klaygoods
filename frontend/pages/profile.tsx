@@ -7,14 +7,16 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
-import { causes } from "@data/causes";
+import { causes, myCauses, supportedCauses } from "@data/causes";
 import { tags } from "@data/tags";
 import styles from "@styles/Profile.module.css";
+import { numberWithCommas } from "@utils/utils";
+import Head from "next/head";
 import Link from "next/link";
 
 function Profile() {
-  const donation = 145000;
-  const numDonations = 23000;
+  const donation = 1492.38;
+  const numDonations = 129;
 
   return (
     <VStack minH="100vh" p="2rem 4rem">
@@ -45,7 +47,7 @@ function Profile() {
             </HStack>
             <Text className={styles.bioHeader}>About</Text>
             <Text className={styles.bioText}>
-              I am a product designer working in web3. I love raising awareness
+              I am a community leader working in web3. I love raising awareness
               on climate change and learning more about the Klaytn ecosystem.
             </Text>
             <Text className={styles.bioHeader}>
@@ -61,7 +63,7 @@ function Profile() {
             <HStack w="100%" gap={2}>
               <VStack className={styles.donationHeader}>
                 <Text className={styles.donationHeaderTitle}>
-                  {donation} KLAY
+                  {numberWithCommas(donation)} KLAY
                 </Text>
                 <Text className={styles.donationHeaderSubtitle}>
                   Total donation amount
@@ -81,9 +83,11 @@ function Profile() {
         <VStack>
           <HStack className={styles.sectionTitleContainer}>
             <HStack className={styles.sectionTitleRightContainer}>
-              <Text className={styles.sectionTitle}>My causes</Text>
+              <Text className={styles.sectionTitle}>
+                {"Causes I've listed"}
+              </Text>
               <VStack className={styles.sectionCount}>
-                <Text className={styles.sectionCountText}>3</Text>
+                <Text className={styles.sectionCountText}>1</Text>
               </VStack>
             </HStack>
             <Link href={`/list`}>
@@ -91,7 +95,7 @@ function Profile() {
             </Link>
           </HStack>
           <HStack className={styles.causeCarousel}>
-            {causes.map(
+            {myCauses.map(
               ({ image, title, last, donation, goal, profile, id }) => (
                 <Link href={`/cause/${id}`} key={id}>
                   <VStack className={styles.causeContainer} cursor="pointer">
@@ -123,7 +127,9 @@ function Profile() {
                           width="20px"
                         ></Image>
                         <Text fontSize="16px" fontWeight={500} color="#5A5A5A">
-                          {`${donation} KLAY raised of ${goal} KLAY`}
+                          {`${numberWithCommas(
+                            donation
+                          )} KLAY raised of ${numberWithCommas(goal)} KLAY`}
                         </Text>
                       </HStack>
                     </VStack>
@@ -147,7 +153,7 @@ function Profile() {
           </HStack>
 
           <HStack className={styles.causeCarousel}>
-            {causes.map(
+            {supportedCauses.map(
               ({ image, title, last, donation, goal, profile, id }) => (
                 <Link href={`/cause/${id}`} key={id}>
                   <VStack className={styles.causeContainer} cursor="pointer">
@@ -189,7 +195,9 @@ function Profile() {
                           width="20px"
                         ></Image>
                         <Text fontSize="16px" fontWeight={500} color="#5A5A5A">
-                          {`${donation} KLAY raised of ${goal} KLAY`}
+                          {`${numberWithCommas(
+                            donation
+                          )} KLAY raised of ${numberWithCommas(goal)} KLAY`}
                         </Text>
                       </HStack>
                     </VStack>
