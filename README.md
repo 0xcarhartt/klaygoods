@@ -8,6 +8,8 @@ A Klatyn-native decentralized giving platform to help public good projects fundr
 
 - Check out the [Live Deployment](https://klaygoods.org)
 - Check out the [Walkthrough Demo](https://vimeo.com/759768734)
+- Discourse Forum: https://klaygoods.discourse.group/
+- Snapshot DAO Governance: https://snapshot.org/#/0xcarhartt.eth
 
 ### Motivation
 
@@ -29,7 +31,7 @@ We saw that Klaytn blockchain was missing a key infrastructure to support public
 
 ### Contracts
 
-KLGD Token (Baobao Testnet): 0x765Dd41FBA7Fbac6AA848fBBa27cCe38c9dC500f
+KLGD Token (Baobao Testnet): [0x765Dd41FBA7Fbac6AA848fBBa27cCe38c9dC500f](https://baobab.scope.klaytn.com/account/0x765Dd41FBA7Fbac6AA848fBBa27cCe38c9dC500f)
 
 ### Getting Started
 
