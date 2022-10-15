@@ -1,34 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# KlayGoods: Decentralized Giving Platform
 
-## Getting Started
+A Klatyn-native decentralized giving platform to help public good projects fundraise for their causes. This project started as a submission to the KlayMakers 2022 Hackathon hosted by the Klaytn Foundation.
+
+![alt text](/public/landing.png)
+
+### Relevant Links
+
+- Check out the [Live Deployment](https://klaygoods.org)
+- Check out the [Walkthrough Demo](https://vimeo.com/759768734)
+
+### Motivation
+
+We saw that Klaytn blockchain was missing a key infrastructure to support public goods projects on its platform. For this hackathon, instead of creating a single project to help a particular cause, we saw an opportunity to create an entire platform to facilitate seamless funding of any public goods projects on the Klaytn blockchain.
+
+### Problems that KlayGoods Solve:
+
+- Universal reach: centralized crowdfunding platforms limit to users with “major debit card or credit card” and a whitelist of certain countries where the service is available. Now with only a self-custody crypto wallet, anyone in the world can donate to any cause
+- Preventing censorship: centralized crowdfunding are prone to censoring projects that don’t align with their ideology (random example, not sure how legit but proves a point)
+- Algorithmic funding: on top of linear funding, we can implement more interesting funding algorithms like quadratic funding that further democratizes our giving mechanism
+- Governance: anyone with the KlayGoods token (KLGD) can participate in the governance of the platform to propose and vote on various proposals. Some possible DAO workstreams can be funding publics goods with treasury, rewarding contributors, public goods prototyping (funding solutions to improve public goods funding), etc.
+
+### Features
+
+- Donate to public good causes on Klaytn blockchain
+- List a new cause and fundraise with KLAY
+- View profiles of platform users and showcase supporting causes
+- Propose and vote for KlayGoods DAO governance
+
+### Contracts
+
+KLGD Token (Baobao Testnet): 0x765Dd41FBA7Fbac6AA848fBBa27cCe38c9dC500f
+
+### Getting Started
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Tech Stack
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Network: Klaytn
+- File Storage: IPFS + Firebase
+- Host Service: Vercel
+- Ethereum Dev Framework: Hardhat
+- Frontend Framework: NextJS
+- Frontend UI Library: Chakra UI
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Next Steps
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Add testing to all aspects of the codebase
+- Add responsive design for cross-platform support
+- Add fiat balance support in preparation for Mainnet
+- Add more interesting funding mechanisms for fundraising
+- Find a talented team to help build out the vision
