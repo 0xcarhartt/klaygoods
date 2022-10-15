@@ -2,7 +2,7 @@
 
 A Klatyn-native decentralized giving platform to help public good projects fundraise for their causes. This project started as a submission to the KlayMakers 2022 Hackathon hosted by the Klaytn Foundation.
 
-![alt text](/public/landing.png)
+![alt text](./frontend/public/landing.png)
 
 ### Relevant Links
 
